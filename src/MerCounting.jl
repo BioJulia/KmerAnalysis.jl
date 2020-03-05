@@ -1,5 +1,14 @@
 module MerCounting
 
-greet() = print("Hello World!")
+export
+    CountMode,
+    IndexedCounts
+
+using ReadDatastores
+
+
+@enum CountMode Canonical NonCanonical
+
+include("IndexedCounts.jl")
 
 end # module
