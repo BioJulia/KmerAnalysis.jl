@@ -36,12 +36,6 @@ function count_mers_srd(::Type{M}, sbuf::DatastoreBuffer{<:PairedReads}, range::
     return collapse_into_counts(chunk_mers)
 end
 
-function count_mers_srd(::Type{M}, prdsfile::String, range::UnitRange{Int}) where {M<:AbstractMer}
-    prds = open(PairedReads, prdsfile)
-    bufprds = SequenceBuffer(prds)
-    return count_mers_srd(M, bufprds, range)
-end
-
 function count_mers_srd(::Type{M}, sbuf::DatastoreBuffer{<:PairedReads}) where {M<:AbstractMer}
     return count_mers_srd(M, sbuf, 1:length(sbuf))
 end
