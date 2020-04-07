@@ -2,12 +2,15 @@ module MerCounting
 
 export
     CountMode,
+    Canonical,
+    NonCanonical,
     IndexedCounts,
     
     MerCount,
     mer,
     freq,
     merge,
+    merge_into!,
     collapse_into_counts,
     collapse_into_counts!,
     
@@ -18,12 +21,13 @@ using
     BioSequences,
     ReadDatastores
     
+abstract type CountMode end
 
-
-@enum CountMode Canonical NonCanonical
+struct Canonical    <: CountMode end
+struct NonCanonical <: CountMode end
 
 include("MerCount.jl")
-include("counter/MinimizerTable")
+include("counter/MinimizerTable.jl")
 include("MerCountHist.jl")
 include("IndexedCounts.jl")
 include("counters/srd.jl")
