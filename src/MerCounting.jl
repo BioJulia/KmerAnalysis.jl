@@ -26,6 +26,12 @@ abstract type CountMode end
 struct Canonical    <: CountMode end
 struct NonCanonical <: CountMode end
 
+@inline (::Type{Canonical})(x) = canonical(x)
+@inline (::Type{NonCanonical})(x) = fwmer(x)
+
+const CANONICAL = Canonical()
+const NONCANONICAL = NonCanonical()
+
 include("MerCount.jl")
 include("counter/MinimizerTable.jl")
 include("MerCountHist.jl")

@@ -21,6 +21,12 @@ struct MerCount{M<:AbstractMer}
     end
 end
 
+"Shorthand for `MerCount{DNAMer{K}}`"
+const DNAMerCount{K} = MerCount{DNAMer{K}}
+
+"Shorthand for `MerCount{RNAMer{K}}`"
+const RNAMerCount{K} = MerCount{RNAMer{K}}
+
 "Get the mer from a `MerCount`."
 @inline mer(x::MerCount{<:AbstractMer}) = x.mer
 
@@ -75,7 +81,7 @@ function unsafe_collapse_into_counts!(result::Vector{MerCount{M}}, mers::Vector{
         while (ri += 1) < stop && mers[ri] == mers[wi]
             ci = ci + one(UInt16)
         end
-        push!(result, MerCount{M}(mers[wi], ci))
+        push!(result, MerCount{M}(mers[wi], ci)) # TODO: See about removing this push!.
         wi = ri
     end
     return result

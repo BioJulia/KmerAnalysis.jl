@@ -1,20 +1,23 @@
-struct IndexedCounts{M<:AbstractMer}
+struct IndexedCounts{M<:AbstractMer,C<:CountMode}
     mer_index::Vector{M}            # Ordered list of kmer that contain counts
     count_names::Vector{Symbol}     # Names of the count vectors
     counts::Vector{Vector{UInt16}}  # Count vectors, each contains an entry per mer in the index
     name::Symbol                    # The name of this MerCounts
-    counting_mode::CountMode
 end
 
 # Construction of empty MerCounts with a name
-@inline function IndexedCounts{M}(name::Symbol, mode::CountMode = Canonical) where {M<:AbstractMer}
-    return IndexedCounts{M}(Vector{M}(), Vector{Symbol}(), Vector{Vector{UInt16}}(), name, mode)
+@inline function IndexedCounts{M,C}(name::Symbol) where {M<:AbstractMer,C<:CountMode}
+    return IndexedCounts{M,C}(Vector{M}(), Vector{Symbol}(), Vector{Vector{UInt16}}(), name)
+end
+
+@inline function IndexedCounts(::Type{M}, name::Symbol, mode::C = CANONICAL) where {M<:AbstractMer,C<:CountMode}
+    return IndexedCounts{M,C}(name)
 end
 
 # Construction from a sequence distance graph
-function IndexedCounts{M}(name::Symbol, sequences, mode::CountMode = Canonical) where {M<:AbstractMer}
+function IndexedCounts(name::Symbol, sequences, mode::C = CANONICAL) where {M<:AbstractMer,C<:CountMode}
     @info string("Creating an empty kmer count datastore called ", name)
-    mc = IndexedCounts{M}(name, mode)
+    mc = IndexedCounts{M,C}(name, mode)
     index!(mc, sequences)
     return mc
 end
@@ -24,8 +27,8 @@ function _determine_kindex_size(::Type{M}, sequences) where {M<:AbstractMer}
     # for loop macro.
     t = 0
     for seq in sequences
-        if length(node) >= BioSequences.ksize(M)
-            t = t + length(node) + 1 - BioSequences.ksize(M)
+        if length(seq) >= BioSequences.ksize(M)
+            t = t + length(seq) + 1 - BioSequences.ksize(M)
         end
     end
     return t
@@ -48,7 +51,7 @@ function _count_and_collapse!(mers::Vector{M}, counts::Vector{UInt16}) where {M<
     return nothing
 end
 
-function index!(mc::IndexedCounts{M}, sequences) where {M<:AbstractMer}
+function index!(mc::IndexedCounts{M,C}, sequences) where {M<:AbstractMer,C<:CountMode}
     @info "Indexing kmer counts of reference sequences"
     @info "Populating index with reference sequence mers"
     # Add all Kmers from reference sequences.
@@ -56,22 +59,12 @@ function index!(mc::IndexedCounts{M}, sequences) where {M<:AbstractMer}
     mcindex = mc.mer_index
     resize!(mcindex, t)
     index_i = 1
-    if mc.counting_mode === Canonical
-        for seq in sequences
-            if length(seq) >= BioSequences.ksize(M)
-                for mer in each(M, seq)
-                    mcindex[index_i] = canonical(mer)
-                    index_i = index_i + 1
-                end
-            end
-        end
-    else
-        for seq in sequences
-            if length(seq) >= BioSequences.ksize(M)
-                for mer in each(M, seq)
-                    mcindex[index_i] = fwmer(mer)
-                    index_i = index_i + 1
-                end
+    f = C()
+    for seq in sequences
+        if length(seq) >= BioSequences.ksize(M)
+            for mer in each(M, seq)
+                mcindex[index_i] = f(mer)
+                index_i = index_i + 1
             end
         end
     end

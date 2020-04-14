@@ -26,10 +26,8 @@ function minimizer(::Type{DNAMer{J}}, mer::DNAMer{K}) where {J,K}
     mask = (one(UInt64) << (2 * J)) - 1
     mer_data = BioSequences.encoded_data(mer)
     min_bits = mer_data & mask
-    #min_i = 0
     for i in (K - J + 1):-1:1
         new_bits = mer_data & mask
-        #min_i = ifelse(new_bits < min_bits, i, min_i)
         min_bits = ifelse(new_bits < min_bits, new_bits, min_bits)
         mer_data = mer_data >> 2
     end
