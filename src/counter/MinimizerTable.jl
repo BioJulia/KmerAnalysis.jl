@@ -66,6 +66,7 @@ function calculate_bins!(mt::MinimizerTable)
         binsums[selected_bin] += minimer_count
         binmap[minimer] = selected_bin
     end
+    return mt
 end
 
 function minimizer_table_maker(::Type{M}, ::Type{D}, filename::String, count_mode::CountMode, nbins::Int) where {M<:MinimizerTable,D<:ReadDatastore}
@@ -77,12 +78,10 @@ function minimizer_table_maker(::Type{M}, ::Type{D}, filename::String, count_mod
 end
 
 function calculate_minimizer_distribution(::Type{M}, ::Type{D}, filename::String, count_mode::CountMode, nbins::Int) where {M<:MinimizerTable,D<:ReadDatastore}
-    #local_tables = [@spawnat p minimizer_table_maker(M, D, filename, count_mode, nbins) for p in nprocs()]
     local_tables = Vector{M}(undef, nprocs())
     @sync for p in procs()
         @async local_tables[p] = remotecall_fetch(minimizer_table_maker, p, M, D, filename, count_mode, nbins)
     end
-    #global_table = merge_tables([fetch(l) for l in local_tables])
-    #calculate_bins!(global_table)
-    return local_tables
+    global_table = merge_tables(local_tables)
+    return calculate_bins!(global_table)
 end
