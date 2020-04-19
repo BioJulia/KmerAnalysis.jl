@@ -7,7 +7,7 @@ using
     BioSequences,
     ReadDatastores
 
-import ..MerCounting: collapse_into_counts, CountMode
+import ..MerCounting: collapse_into_counts, CountMode, MerCount
 
 include("serial_mem.jl")
 include("dist_mem.jl")
