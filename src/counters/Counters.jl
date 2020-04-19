@@ -10,6 +10,7 @@ using
 import ..MerCounting: collapse_into_counts, CountMode
 
 include("serial_mem.jl")
+include("dist_mem.jl")
 
 
 end # module
