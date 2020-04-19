@@ -1,5 +1,5 @@
 
-function collect_mers(::Type{M}, count_mode::CountMode, input::DatastoreBuffer{PairedReads}, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
+function collect_mers(::Type{M}, count_mode::CountMode, input::DatastoreBuffer{<:PairedReads}, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
     max_read_size = max_read_length(ReadDatastores.datastore(sbuf))
     v = Vector{M}(undef, length(input) * (max_read_size - ksize(M) + 1))
     wi = firstindex(v)
@@ -14,7 +14,7 @@ function collect_mers(::Type{M}, count_mode::CountMode, input::DatastoreBuffer{P
 end
 
 """
-    serial_mem(::Type{M}, count_mode::CountMode, input::DatastoreBuffer{<:ReadDatastore}, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
+    serial_mem(::Type{M}, input::DatastoreBuffer{<:ReadDatastore}, count_mode::CountMode, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
 
 MerCounting's simplest kmer counting method.
 
@@ -34,7 +34,22 @@ Build a sorted list (vector) of kmer counts (MerCount), serially and entirely in
     So if you want to count kmers and have the resources to throw at it, this is
     the simplest method, and possibly even the quickest given that simplicity.
 """
-function serial_mem(::Type{M}, count_mode::CountMode, input::DatastoreBuffer{<:ReadDatastore}, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
+function serial_mem(::Type{M}, input::DatastoreBuffer{<:ReadDatastore}, count_mode::CountMode, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
+    @info "Collecting kmers from all reads in $(name(input))"
     all_mers = collect_mers(M, count_mode, input, range)
     return collapse_into_counts(all_mers)
+end
+
+macro serial_mem(K::Int, count_mode::Symbol, filename::String, range::Expr)
+    # Figure out type of read datastore
+    dstype = ReadDatastores.deduce_datastore_type(filename)
+    # Process the range argument
+    @assert range.head === :call
+    @assert range.args[1] === :(:)
+    interval = range.args[2]:range.args[3]
+    quote
+        open($dstype, $filename) do ds
+            serial_mem(DNAMer{$K}, $count_mode, ds, $interval)
+        end
+    end
 end
