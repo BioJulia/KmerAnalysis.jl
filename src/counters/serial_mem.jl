@@ -1,6 +1,6 @@
 
 function collect_mers(::Type{M}, count_mode::CountMode, input::DatastoreBuffer{<:PairedReads}, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
-    max_read_size = max_read_length(ReadDatastores.datastore(sbuf))
+    max_read_size = max_read_length(ReadDatastores.datastore(input))
     v = Vector{M}(undef, length(input) * (max_read_size - ksize(M) + 1))
     wi = firstindex(v)
     read_sequence = eltype(input)()
