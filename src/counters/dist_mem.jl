@@ -5,7 +5,7 @@
 #end
 
 function dist_mem(::Type{M}, input::DatastoreBuffer{<:ReadDatastore}, count_mode::CountMode) where {M<:AbstractMer}
-    @info "Splitting all reads in $(datastore(name(input))), across $(nprocs()) processes and counting kmers"
+    @info "Splitting all reads in $(name(datastore(input))), across $(nprocs()) processes and counting kmers"
     local_counts = Vector{Vector{MerCount{M}}}(undef, nprocs())
     @sync for p in procs()
         p:nprocs():length(input)
