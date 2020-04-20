@@ -35,7 +35,7 @@ Build a sorted list (vector) of kmer counts (MerCount), serially and entirely in
     the simplest method, and possibly even the quickest given that simplicity.
 """
 function serial_mem(::Type{M}, input::DatastoreBuffer{<:ReadDatastore}, count_mode::CountMode, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
-    @info "Collecting kmers from all reads in $(name(input))"
+    @info "Collecting kmers from all reads in $(name(datastore(input)))"
     all_mers = collect_mers(M, count_mode, input, range)
     return collapse_into_counts(all_mers)
 end
