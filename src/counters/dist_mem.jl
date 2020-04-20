@@ -9,7 +9,7 @@ function dist_mem(::Type{M}, input::DatastoreBuffer{<:ReadDatastore}, count_mode
     local_counts = Vector{Vector{MerCount{M}}}(undef, nprocs())
     @sync for p in procs()
         p:nprocs():length(input)
-        @async local_counts[p] = remotecall_fetch(serial_mem, M, input, count_mode, p:nprocs():length(input))
+        @async local_counts[p] = remotecall_fetch(serial_mem, p, M, input, count_mode, p:nprocs():length(input))
     end
     return local_counts
     #unsafe_merge_into!
