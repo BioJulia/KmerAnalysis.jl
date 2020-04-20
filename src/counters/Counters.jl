@@ -5,7 +5,8 @@ export serial_mem
 
 using
     BioSequences,
-    ReadDatastores
+    ReadDatastores,
+    Distributed
 
 import ..MerCounting: collapse_into_counts, CountMode, MerCount
 
