@@ -5,7 +5,7 @@ function collect_mers(::Type{M}, count_mode::CountMode, input::DatastoreBuffer{<
     wi = firstindex(v)
     read_sequence = eltype(input)()
     @inbounds for i in range
-        for mer in each(M, load_sequence!(sbuf, i, read_sequence))
+        for mer in each(M, load_sequence!(input, i, read_sequence))
             v[wi] = count_mode(mer)
             wi = wi + 1
         end
