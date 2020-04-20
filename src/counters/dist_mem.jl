@@ -11,8 +11,9 @@ function dist_mem(::Type{M}, input::DatastoreBuffer{<:ReadDatastore}, count_mode
         p:nprocs():length(input)
         @async local_counts[p] = remotecall_fetch(serial_mem, p, M, input, count_mode, p:nprocs():length(input))
     end
-    return local_counts
-    #unsafe_merge_into!
-    #all_mers = collect_mers(M, count_mode, input, range)
-    #return collapse_into_counts(all_mers)
+    final_count = local_counts[1]
+    @inbounds for i in 2:lastindex(local_counts)
+        unsafe_merge_into!(final_count, local_counts[i])
+    end
+    return final_count
 end
