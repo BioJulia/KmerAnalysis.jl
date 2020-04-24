@@ -64,6 +64,30 @@ function Base.show(io::IO, mfreq::MerCount{<:AbstractMer})
     print(io, mer(mfreq), " occurs ", freq(mfreq), " times")
 end
 
+function collect_mers(count_mode::CountMode, input::BioSequences.EveryMerIterator)
+    return collect(count_mode(x) for x in input)
+end
+
+function collect_mers(::Type{M}, count_mode::CountMode, input::BioSequence) where {M<:AbstractMer}
+    return collect_mers(count_mode, each(M, input))
+end
+
+function collect_mers(::Type{M}, count_mode::CountMode, input::DatastoreBuffer{<:PairedReads}, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
+    max_read_size = max_read_length(ReadDatastores.datastore(input))
+    v = Vector{M}(undef, length(input) * (max_read_size - BioSequences.ksize(M) + 1))
+    wi = firstindex(v)
+    read_sequence = eltype(input)()
+    @inbounds for i in range
+        for mer in each(M, load_sequence!(input, i, read_sequence))
+            v[wi] = count_mode(mer)
+            wi = wi + 1
+        end
+    end
+    return resize!(v, wi - 1)
+end
+
+collect_mers(v::Vector{M}) where {M<:AbstractMer} = v
+
 """
     unsafe_collapse_into_counts!(result::Vector{MerCount{M}}, mers::Vector{M}) where {M<:AbstractMer}
 
@@ -113,9 +137,24 @@ Build a vector of sorted `MerCount`s from a Vector of a mer type.
 
 This is a basic kernel function used for any higher level and more complex
 kmer counting procedures.
+
+!!! note
+    The input vector `mers` will be sorted by this method.
 """
-function collapse_into_counts(mers::Vector{M}) where {M<:AbstractMer}
+function collapse_into_counts!(mers::Vector{M}) where {M<:AbstractMer}
     return collapse_into_counts!(Vector{MerCount{M}}(), mers)
+end
+
+# The dispatch here could be a little better. - Distinguising between Mer iterators and
+# non mer iterators perhaps.
+function Vector{MerCount{M}}(mode::CountMode, input::BioSequences.EveryMerIterator{M}) where {M<:AbstractMer}
+    mers = collect_mers(mode, input)
+    return collapse_into_counts!(mers)
+end
+
+function Vector{MerCount{M}}(mode::CountMode, input::Any, args...) where {M<:AbstractMer}
+    mers = collect_mers(M, mode, input, args...)
+    return collapse_into_counts!(mers)
 end
 
 """

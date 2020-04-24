@@ -16,7 +16,7 @@
         return isempty(b) && a == a′
     end
     
-    @test collapse_into_counts(v) == [
+    @test collapse_into_counts!(v) == [
         MerCount{DNAMer{4}}(mer"AAAA", 3),
         MerCount{DNAMer{4}}(mer"AGGT", 4),
         MerCount{DNAMer{4}}(mer"ATAG", 1),
@@ -24,7 +24,7 @@
         MerCount{DNAMer{4}}(mer"GGGT", 1)
     ]
     
-    @test collapse_into_counts(v2) == [
+    @test collapse_into_counts!(v2) == [
         MerCount{DNAMer{4}}(mer"AAAA", 3),
         MerCount{DNAMer{4}}(mer"AAGT", 2),
         MerCount{DNAMer{4}}(mer"ACGT", 1),
@@ -34,7 +34,7 @@
         MerCount{DNAMer{4}}(mer"GGGT", 1)
     ]
     
-    @test test_merge_into(collapse_into_counts(v), collapse_into_counts(v2), [
+    @test test_merge_into(collapse_into_counts!(v), collapse_into_counts!(v2), [
         MerCount{DNAMer{4}}(mer"AAAA", 6),
         MerCount{DNAMer{4}}(mer"AAGT", 2),
         MerCount{DNAMer{4}}(mer"ACGT", 1),

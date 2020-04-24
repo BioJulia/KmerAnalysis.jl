@@ -3,7 +3,9 @@ module MerCounting
 export
     CountMode,
     Canonical,
+    CANONICAL,
     NonCanonical,
+    NONCANONICAL,
     IndexedCounts,
     
     MerCount,
@@ -13,6 +15,7 @@ export
     merge_into!,
     collapse_into_counts,
     collapse_into_counts!,
+    collect_mers,
     
     Counters
     

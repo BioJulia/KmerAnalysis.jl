@@ -18,6 +18,7 @@ RNAMerCount
 mer
 freq
 merge
+collect_mers
 collapse_into_counts
 collapse_into_counts!
 merge_into!

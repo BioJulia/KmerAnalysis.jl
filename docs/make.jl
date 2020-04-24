@@ -9,7 +9,9 @@ makedocs(
         "Home" => "index.md",
         "Manual" => [
             "Installation" => "man/installation.md",
-            "Basic types and counting" => "man/basic_counting.md"
+            "Basic types and counting" => "man/basic_counting.md",
+            "Counters for read datasets" => "man/counting_reads.md",
+            "Analysing Kmer count data" => "man/analyses.md"
         ],
         "API" => [
             "MerCount" => "api/MerCount.md"
@@ -19,7 +21,7 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/BioJulia/GenomeGraphs.jl.git",
+    repo = "github.com/BioJulia/MerCounting.jl.git",
     push_preview = true,
     deps = nothing,
     make = nothing
