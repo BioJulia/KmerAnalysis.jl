@@ -74,6 +74,7 @@ function minimizer_table_maker(::Type{M}, ::Type{D}, filename::String, count_mod
     ds = buffer(open(D, filename))
     part = myid():nprocs():length(ds)
     initialize_minimizer_table!(mt, count_mode, ds, part)
+    close(ds)
     return mt
 end
 

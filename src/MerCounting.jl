@@ -14,13 +14,11 @@ export
     collapse_into_counts,
     collapse_into_counts!,
     
-    # Single thread in RAM kmer counter.
-    count_mers_srd
+    Counters
+    
+    
 
-using
-    BioSequences,
-    ReadDatastores,
-    Distributed
+using BioSequences, ReadDatastores, Distributed
     
 abstract type CountMode end
 
@@ -35,7 +33,6 @@ const NONCANONICAL = NonCanonical()
 
 include("MerCount.jl")
 include("counters/Counters.jl")
-include("counter/MinimizerTable.jl")
 include("MerCountHist.jl")
 include("IndexedCounts.jl")
 

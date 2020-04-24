@@ -8,6 +8,8 @@ makedocs(
     pages = [
         "Home" => "index.md",
         "Manual" => [
+            "Installation" => "man/installation.md",
+            "Basic types and counting" => "man/basic_counting.md"
         ],
         "API" => [
             "MerCount" => "api/MerCount.md"

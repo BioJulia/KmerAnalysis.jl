@@ -22,18 +22,6 @@ function IndexedCounts(name::Symbol, sequences, mode::C = CANONICAL) where {M<:A
     return mc
 end
 
-function _determine_kindex_size(::Type{M}, sequences) where {M<:AbstractMer}
-    # TODO: This can probably be done in parallel very simply with the distributed
-    # for loop macro.
-    t = 0
-    for seq in sequences
-        if length(seq) >= BioSequences.ksize(M)
-            t = t + length(seq) + 1 - BioSequences.ksize(M)
-        end
-    end
-    return t
-end
-
 function _count_and_collapse!(mers::Vector{M}, counts::Vector{UInt16}) where {M<:AbstractMer}
     wi = 1
     ri = 1
@@ -51,23 +39,23 @@ function _count_and_collapse!(mers::Vector{M}, counts::Vector{UInt16}) where {M<
     return nothing
 end
 
-function index!(mc::IndexedCounts{M,C}, sequences) where {M<:AbstractMer,C<:CountMode}
+function index!(mc::IndexedCounts{M,C}, ref_sequences::Vector{<:LongSequence}) where {M<:AbstractMer,C<:CountMode}
     @info "Indexing kmer counts of reference sequences"
     @info "Populating index with reference sequence mers"
     # Add all Kmers from reference sequences.
-    t = _determine_kindex_size(M, sequences)
+    # t = expected number of kmers.
+    t = sum(length(x) for x in ref_sequences) - BioSequences.ksize(M) + 1
     mcindex = mc.mer_index
     resize!(mcindex, t)
-    index_i = 1
+    vec_i = 1
     f = C()
-    for seq in sequences
-        if length(seq) >= BioSequences.ksize(M)
-            for mer in each(M, seq)
-                mcindex[index_i] = f(mer)
-                index_i = index_i + 1
-            end
+    for seq in ref_sequences
+        for mer in each(M, seq)
+            mcindex[vec_i] = f(mer)
+            vec_i = vec_i + 1
         end
     end
+    resize!(mcindex, vec_i)
     @info "Sorting the index"
     # Sort the index
     sort!(mcindex)
