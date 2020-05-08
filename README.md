@@ -1,10 +1,10 @@
-# <img align="right" src="./sticker.svg" width="30%"> MerCounting
+# <img align="right" src="./sticker.svg" width="30%"> KmerAnalysis
 
-[![Latest release](https://img.shields.io/github/release/BioJulia/MerCounting.svg)](https://github.com/BioJulia/MerCounting/releases/latest)
-[![MIT license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/BioJulia/MerCounting.jl/blob/master/LICENSE) 
-[![Stable documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://biojulia.github.io/MerCounting.jl/stable)
+[![Latest release](https://img.shields.io/github/release/BioJulia/KmerAnalysis.svg)](https://github.com/BioJulia/KmerAnalysis/releases/latest)
+[![MIT license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/BioJulia/KmerAnalysis.jl/blob/master/LICENSE) 
+[![Stable documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://biojulia.github.io/KmerAnalysis.jl/stable)
 [![Pkg Status](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
-[![Chat](https://img.shields.io/gitter/room/BioJulia/MerCounting.svg)](https://gitter.im/BioJulia/MerCounting)
+[![Chat](https://img.shields.io/gitter/room/BioJulia/KmerAnalysis.svg)](https://gitter.im/BioJulia/KmerAnalysis)
 
 
 ## Description
@@ -12,22 +12,22 @@
 
 ## Installation
 
-MerCounting is currently in **pre-alpha** development.
-But you can clone MerCounting from the Julia REPL:
+KmerAnalysis is currently in **pre-alpha** development.
+But you can clone KmerAnalysis from the Julia REPL:
 
 ```julia
-julia> Pkg.clone("https://github.com/BioJulia/MerCounting.jl.git")
+julia> Pkg.clone("https://github.com/BioJulia/KmerAnalysis.jl.git")
 ```
 
 
 ## Testing
 
-MerCounting is tested against Julia `1.X` on Linux, OS X, and Windows.
+KmerAnalysis is tested against Julia `1.X` on Linux, OS X, and Windows.
 
 **Latest build status:**
 
-![](https://github.com/BioJulia/MerCounting.jl/workflows/Unit%20testing/badge.svg)
-![](https://github.com/BioJulia/MerCounting.jl/workflows/Documentation/badge.svg)
+![](https://github.com/BioJulia/KmerAnalysis.jl/workflows/Unit%20testing/badge.svg)
+![](https://github.com/BioJulia/KmerAnalysis.jl/workflows/Documentation/badge.svg)
 
 
 ## Contributing

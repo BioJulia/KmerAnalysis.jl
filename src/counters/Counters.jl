@@ -9,7 +9,7 @@ using
     ReadDatastores,
     Distributed
 
-import ..MerCounting: collapse_into_counts!, CountMode, MerCount, unsafe_merge_into!, collect_mers
+import ..KmerAnalysis: collapse_into_counts!, CountMode, MerCount, unsafe_merge_into!, collect_mers
 
 include("serial_mem.jl")
 include("dist_mem.jl")

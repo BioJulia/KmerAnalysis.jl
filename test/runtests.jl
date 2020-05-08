@@ -1,6 +1,6 @@
-module TestMerCounting
+module TestKmerAnalysis
 
-using MerCounting, BioSequences, Test
+using KmerAnalysis, BioSequences, Test
 
 include("MerCount.jl")
 

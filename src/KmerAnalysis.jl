@@ -1,4 +1,4 @@
-module MerCounting
+module KmerAnalysis
 
 export
     CountMode,
@@ -17,7 +17,11 @@ export
     collapse_into_counts!,
     collect_mers,
     
-    Counters
+    Counters,
+    
+    # Kmer frequency spectra
+    spectra,
+    spectra!
     
     
 
@@ -36,7 +40,7 @@ const NONCANONICAL = NonCanonical()
 
 include("MerCount.jl")
 include("counters/Counters.jl")
-include("MerCountHist.jl")
+include("KmerFrequencySpectra.jl")
 include("IndexedCounts.jl")
 
 end # module

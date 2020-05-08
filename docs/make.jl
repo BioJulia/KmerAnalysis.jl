@@ -1,9 +1,9 @@
-using Documenter, MerCounting, Pkg
+using Documenter, KmerAnalysis, Pkg
 
 makedocs(
-    modules = [MerCounting],
+    modules = [KmerAnalysis],
     format = Documenter.HTML(),
-    sitename = "MerCounting.jl",
+    sitename = "KmerAnalysis.jl",
     authors = replace(join(Pkg.TOML.parsefile("Project.toml")["authors"], ", "), r" <.*?>" => "" ),
     pages = [
         "Home" => "index.md",
@@ -21,7 +21,7 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/BioJulia/MerCounting.jl.git",
+    repo = "github.com/BioJulia/KmerAnalysis.jl.git",
     push_preview = true,
     deps = nothing,
     make = nothing
