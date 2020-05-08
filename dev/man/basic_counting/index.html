@@ -1,140 +1,140 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Basic types and counting · MerCounting.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">MerCounting.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../installation/">Installation</a></li><li class="is-active"><a class="tocitem" href>Basic types and counting</a></li><li><a class="tocitem" href="../counting_reads/">Counters for read datasets</a></li></ul></li><li><span class="tocitem">API</span><ul><li><a class="tocitem" href="../../api/MerCount/">MerCount</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Basic types and counting</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Basic types and counting</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/BioJulia/MerCounting.jl/blob/master/docs/src/man/basic_counting.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Basic-types-and-basic-kmer-counting-1"><a class="docs-heading-anchor" href="#Basic-types-and-basic-kmer-counting-1">Basic types and basic kmer counting</a><a class="docs-heading-anchor-permalink" href="#Basic-types-and-basic-kmer-counting-1" title="Permalink"></a></h1><p>MerCounting has a few basic types and methods to allow you do easily do some basic kmer counting.</p><p>The first and perhaps most obvious of these is a type to represent a kmer and its frequency, for this, MerCounting provides the <a href="../../api/MerCount/#MerCounting.MerCount"><code>MerCount</code></a> type.</p><p>If you have a <a href="../../api/MerCount/#MerCounting.MerCount"><code>MerCount</code></a> variable you can get the kmer value or the frequency value using the <a href="../../api/MerCount/#MerCounting.mer"><code>mer</code></a> and <a href="../../api/MerCount/#MerCounting.freq"><code>freq</code></a> getter methods.</p><p>A vector of these <a href="../../api/MerCount/#MerCounting.MerCount"><code>MerCount</code></a>s constitute one option for a simple data structure for representing kmer frequency data. This packages defines other more dedicated types, but we will get to those in later sections of this manual.</p><p>Ok, so let&#39;s do some very basic kmer counting for a sequence!</p><p>First we need a sequence:</p><pre><code class="language-julia-repl">julia&gt; using MerCounting
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Basic types and counting · MerCounting.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">MerCounting.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../installation/">Installation</a></li><li class="is-active"><a class="tocitem" href>Basic types and counting</a></li><li><a class="tocitem" href="../counting_reads/">Counters for read datasets</a></li><li><a class="tocitem" href="../analyses/">Analysing Kmer count data</a></li></ul></li><li><span class="tocitem">API</span><ul><li><a class="tocitem" href="../../api/MerCount/">MerCount</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Basic types and counting</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Basic types and counting</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/BioJulia/MerCounting.jl/blob/master/docs/src/man/basic_counting.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Basic-types-and-basic-kmer-counting-1"><a class="docs-heading-anchor" href="#Basic-types-and-basic-kmer-counting-1">Basic types and basic kmer counting</a><a class="docs-heading-anchor-permalink" href="#Basic-types-and-basic-kmer-counting-1" title="Permalink"></a></h1><p>MerCounting has a few basic types and methods to allow you do easily do some basic kmer counting.</p><p>The first and perhaps most obvious of these is a type to represent a kmer and its frequency, for this, MerCounting provides the <a href="../../api/MerCount/#MerCounting.MerCount"><code>MerCount</code></a> type.</p><p>If you have a <a href="../../api/MerCount/#MerCounting.MerCount"><code>MerCount</code></a> variable you can get the kmer value or the frequency value using the <a href="../../api/MerCount/#MerCounting.mer"><code>mer</code></a> and <a href="../../api/MerCount/#MerCounting.freq"><code>freq</code></a> getter methods.</p><p>A vector of these <a href="../../api/MerCount/#MerCounting.MerCount"><code>MerCount</code></a>s constitute one option for a simple data structure for representing kmer frequency data. This packages defines other more dedicated types, but we will get to those in later sections of this manual.</p><p>Ok, so let&#39;s do some very basic kmer counting for a sequence!</p><p>First we need a sequence:</p><pre><code class="language-julia-repl">julia&gt; using MerCounting
 
 julia&gt; using BioSequences
 
 julia&gt; s = randdnaseq(50)
 50nt DNA Sequence:
-ATCACGCAGGACATGACACCAGAAGACTCCTTCGCTAGTTGCGACCGTTA</code></pre><p>Ok, let&#39;s say we wanted to count the 7-mers, we can collect all the 7-mers using BioSequences&#39; kmer iterator:</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect(each(DNAMer{7}, s))
+CGTTCTTAGAAATCTTCCGTCGTCCGGTGATTTTTGACTCCCACCAGTGC</code></pre><p>Ok, let&#39;s say we wanted to count the 7-mers, we can collect all the 7-mers using BioSequences&#39; kmer iterator:</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect(each(DNAMer{7}, s))
 44-element Array{BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}},1}:
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(1, ATCACGC, GCGTGAT)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(2, TCACGCA, TGCGTGA)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(3, CACGCAG, CTGCGTG)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(4, ACGCAGG, CCTGCGT)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(5, CGCAGGA, TCCTGCG)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(6, GCAGGAC, GTCCTGC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(7, CAGGACA, TGTCCTG)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(8, AGGACAT, ATGTCCT)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(9, GGACATG, CATGTCC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(10, GACATGA, TCATGTC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(1, CGTTCTT, AAGAACG)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(2, GTTCTTA, TAAGAAC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(3, TTCTTAG, CTAAGAA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(4, TCTTAGA, TCTAAGA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(5, CTTAGAA, TTCTAAG)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(6, TTAGAAA, TTTCTAA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(7, TAGAAAT, ATTTCTA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(8, AGAAATC, GATTTCT)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(9, GAAATCT, AGATTTC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(10, AAATCTT, AAGATTT)
  ⋮
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(36, TAGTTGC, GCAACTA)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(37, AGTTGCG, CGCAACT)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(38, GTTGCGA, TCGCAAC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(39, TTGCGAC, GTCGCAA)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(40, TGCGACC, GGTCGCA)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(41, GCGACCG, CGGTCGC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(42, CGACCGT, ACGGTCG)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(43, GACCGTT, AACGGTC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(44, ACCGTTA, TAACGGT)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(36, GACTCCC, GGGAGTC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(37, ACTCCCA, TGGGAGT)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(38, CTCCCAC, GTGGGAG)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(39, TCCCACC, GGTGGGA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(40, CCCACCA, TGGTGGG)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(41, CCACCAG, CTGGTGG)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(42, CACCAGT, ACTGGTG)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(43, ACCAGTG, CACTGGT)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(44, CCAGTGC, GCACTGG)
 
 julia&gt; sevenmers[1]
 Mer iteration result:
 Position: 1
-Forward: ATCACGC
-Backward: GCGTGAT</code></pre><p>Ok BioSequences&#39; kmer iterator on its own yields a <code>MerIterResult</code>, which contains a tuple of (Base position in sequence, kmer, reverse complement of the kmer).</p><p>Now let&#39;s say I was only interested in counting canonical kmers in <code>s</code>. For any kmer and its reverse complement, the canonical version is the one that is lexicographically less.</p><p>So let&#39;s revise our <code>collect</code> above to give us a vector of the canonical kmers. Thankfully, BioSequences comes with a method called <code>canonical</code>, for exactly this purpose.</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect(canonical(x) for x in each(DNAMer{7}, s))
+Forward: CGTTCTT
+Backward: AAGAACG</code></pre><p>Ok BioSequences&#39; kmer iterator on its own yields a <code>MerIterResult</code>, which contains a tuple of (Base position in sequence, kmer, reverse complement of the kmer).</p><p>Now let&#39;s say I was only interested in counting canonical kmers in <code>s</code>. For any kmer and its reverse complement, the canonical version is the one that is lexicographically less.</p><p>So let&#39;s revise our <code>collect</code> above to give us a vector of the canonical kmers. Thankfully, BioSequences comes with a method called <code>canonical</code>, for exactly this purpose.</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect(canonical(x) for x in each(DNAMer{7}, s))
 44-element Array{BioSequences.Mer{BioSequences.DNAAlphabet{2},7},1}:
- ATCACGC
- TCACGCA
- CACGCAG
- ACGCAGG
- CGCAGGA
- GCAGGAC
- CAGGACA
- AGGACAT
- CATGTCC
- GACATGA
+ AAGAACG
+ GTTCTTA
+ CTAAGAA
+ TCTAAGA
+ CTTAGAA
+ TTAGAAA
+ ATTTCTA
+ AGAAATC
+ AGATTTC
+ AAATCTT
  ⋮
- GCAACTA
- AGTTGCG
- GTTGCGA
- GTCGCAA
- GGTCGCA
- CGGTCGC
- ACGGTCG
- AACGGTC
- ACCGTTA</code></pre><p>If you wanted to collect all the kmers in <code>s</code> &quot;as is&quot; as it were, you can use the <code>fwmer</code> method provided with BioSequences for this purpose.</p><pre><code class="language-julia-repl">julia&gt; collect(fwmer(x) for x in each(DNAMer{7}, s))
+ GACTCCC
+ ACTCCCA
+ CTCCCAC
+ GGTGGGA
+ CCCACCA
+ CCACCAG
+ ACTGGTG
+ ACCAGTG
+ CCAGTGC</code></pre><p>If you wanted to collect all the kmers in <code>s</code> &quot;as is&quot; as it were, you can use the <code>fwmer</code> method provided with BioSequences for this purpose.</p><pre><code class="language-julia-repl">julia&gt; collect(fwmer(x) for x in each(DNAMer{7}, s))
 44-element Array{BioSequences.Mer{BioSequences.DNAAlphabet{2},7},1}:
- ATCACGC
- TCACGCA
- CACGCAG
- ACGCAGG
- CGCAGGA
- GCAGGAC
- CAGGACA
- AGGACAT
- GGACATG
- GACATGA
+ CGTTCTT
+ GTTCTTA
+ TTCTTAG
+ TCTTAGA
+ CTTAGAA
+ TTAGAAA
+ TAGAAAT
+ AGAAATC
+ GAAATCT
+ AAATCTT
  ⋮
- TAGTTGC
- AGTTGCG
- GTTGCGA
- TTGCGAC
- TGCGACC
- GCGACCG
- CGACCGT
- GACCGTT
- ACCGTTA</code></pre><p>This is quite nice and terse code, but we haven&#39;t used MerCounting to help us at all yet. MerCounting allows us to achieve the above with the use of a single function called <a href="man/@ref"><code>collect_mers</code></a>, instead of <code>collect</code>ing a generator:</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect_mers(CANONICAL, each(DNAMer{7}, s))
+ GACTCCC
+ ACTCCCA
+ CTCCCAC
+ TCCCACC
+ CCCACCA
+ CCACCAG
+ CACCAGT
+ ACCAGTG
+ CCAGTGC</code></pre><p>This is quite nice and terse code, but we haven&#39;t used MerCounting to help us at all yet. MerCounting allows us to achieve the above with the use of a single function called <a href="man/@ref"><code>collect_mers</code></a>, instead of <code>collect</code>ing a generator:</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect_mers(CANONICAL, each(DNAMer{7}, s))
 44-element Array{BioSequences.Mer{BioSequences.DNAAlphabet{2},7},1}:
- ATCACGC
- TCACGCA
- CACGCAG
- ACGCAGG
- CGCAGGA
- GCAGGAC
- CAGGACA
- AGGACAT
- CATGTCC
- GACATGA
+ AAGAACG
+ GTTCTTA
+ CTAAGAA
+ TCTAAGA
+ CTTAGAA
+ TTAGAAA
+ ATTTCTA
+ AGAAATC
+ AGATTTC
+ AAATCTT
  ⋮
- GCAACTA
- AGTTGCG
- GTTGCGA
- GTCGCAA
- GGTCGCA
- CGGTCGC
- ACGGTCG
- AACGGTC
- ACCGTTA</code></pre><p>There are a few different methods of <a href="man/@ref"><code>collect_mers</code></a> for different types of input, check out the API reference for more info.</p><p>MerCounting exports <code>CANONICAL</code> and <code>NONCANONICAL</code>, which work with <a href="man/@ref"><code>collect_mers</code></a> and other MerCounting functions to dictate how the kmers are produced.</p><p>Ok so we have our canonical kmers, how can we count them? Well one of the ways to count the number of distinct values in a vector is to sort it and traverse it in one go. The <a href="../../api/MerCount/#MerCounting.collapse_into_counts!"><code>collapse_into_counts!</code></a> methods do this for you.</p><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p><a href="../../api/MerCount/#MerCounting.collapse_into_counts!"><code>collapse_into_counts!</code></a> will sort the input <code>sevenmers</code> vector in place.</p></div></div><pre><code class="language-julia-repl">julia&gt; mercounts = collapse_into_counts!(sevenmers)
+ GACTCCC
+ ACTCCCA
+ CTCCCAC
+ GGTGGGA
+ CCCACCA
+ CCACCAG
+ ACTGGTG
+ ACCAGTG
+ CCAGTGC</code></pre><p>There are a few different methods of <a href="man/@ref"><code>collect_mers</code></a> for different types of input, check out the API reference for more info.</p><p>MerCounting exports <code>CANONICAL</code> and <code>NONCANONICAL</code>, which work with <a href="man/@ref"><code>collect_mers</code></a> and other MerCounting functions to dictate how the kmers are produced.</p><p>Ok so we have our canonical kmers, how can we count them? Well one of the ways to count the number of distinct values in a vector is to sort it and traverse it in one go. The <a href="../../api/MerCount/#MerCounting.collapse_into_counts!"><code>collapse_into_counts!</code></a> methods do this for you.</p><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p><a href="../../api/MerCount/#MerCounting.collapse_into_counts!"><code>collapse_into_counts!</code></a> will sort the input <code>sevenmers</code> vector in place.</p></div></div><pre><code class="language-julia-repl">julia&gt; mercounts = collapse_into_counts!(sevenmers)
 44-element Array{MerCount{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}},1}:
- AACGGTC occurs 1 times
- AACTAGC occurs 1 times
- AAGACTC occurs 1 times
- AAGGAGT occurs 1 times
- ACACCAG occurs 1 times
- ACATGAC occurs 1 times
- ACCAGAA occurs 1 times
- ACCGTTA occurs 1 times
- ACGCAGG occurs 1 times
- ACGGTCG occurs 1 times
+ AAAAATC occurs 1 times
+ AAAATCA occurs 1 times
+ AAATCAC occurs 1 times
+ AAATCTT occurs 1 times
+ AAGAACG occurs 1 times
+ AATCACC occurs 1 times
+ AATCTTC occurs 1 times
+ ACCAGTG occurs 1 times
+ ACCGGAC occurs 1 times
+ ACGACGG occurs 1 times
  ⋮
- GACATGA occurs 1 times
- GCAACTA occurs 1 times
- GCAGGAC occurs 1 times
- GGTCGCA occurs 1 times
- GGTGTCA occurs 1 times
- GTCGCAA occurs 1 times
- GTTGCGA occurs 1 times
- TAGCGAA occurs 1 times
- TCACGCA occurs 1 times</code></pre><p>Looks like every distinct kmer appeared once, with the possible odd exceptions. Well that&#39;s to be expected! We did just do this with a single 50bp long random sequence after all!</p><p>So for any sequence or input we want to count kmers for, we have to <a href="man/@ref"><code>collect_mers</code></a> and then collapse them into counts with <a href="../../api/MerCount/#MerCounting.collapse_into_counts!"><code>collapse_into_counts!</code></a>.</p><p>For convenience and more terse code, MerCounting provides a constructor for vectors of <a href="../../api/MerCount/#MerCounting.MerCount"><code>MerCount</code></a> that does this for you.</p><pre><code class="language-julia-repl">julia&gt; v = Vector{MerCount{DNAMer{7}}}(CANONICAL, s)
+ GAGTCAA occurs 1 times
+ GGACGAC occurs 1 times
+ GGAGTCA occurs 1 times
+ GGTGGGA occurs 1 times
+ GTCAAAA occurs 1 times
+ GTTCTTA occurs 1 times
+ TCAAAAA occurs 1 times
+ TCTAAGA occurs 1 times
+ TTAGAAA occurs 1 times</code></pre><p>Looks like every distinct kmer appeared once, with the possible odd exceptions. Well that&#39;s to be expected! We did just do this with a single 50bp long random sequence after all!</p><p>So for any sequence or input we want to count kmers for, we have to <a href="man/@ref"><code>collect_mers</code></a> and then collapse them into counts with <a href="../../api/MerCount/#MerCounting.collapse_into_counts!"><code>collapse_into_counts!</code></a>.</p><p>For convenience and more terse code, MerCounting provides a constructor for vectors of <a href="../../api/MerCount/#MerCounting.MerCount"><code>MerCount</code></a> that does this for you.</p><pre><code class="language-julia-repl">julia&gt; v = Vector{MerCount{DNAMer{7}}}(CANONICAL, s)
 44-element Array{MerCount{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}},1}:
- AACGGTC occurs 1 times
- AACTAGC occurs 1 times
- AAGACTC occurs 1 times
- AAGGAGT occurs 1 times
- ACACCAG occurs 1 times
- ACATGAC occurs 1 times
- ACCAGAA occurs 1 times
- ACCGTTA occurs 1 times
- ACGCAGG occurs 1 times
- ACGGTCG occurs 1 times
+ AAAAATC occurs 1 times
+ AAAATCA occurs 1 times
+ AAATCAC occurs 1 times
+ AAATCTT occurs 1 times
+ AAGAACG occurs 1 times
+ AATCACC occurs 1 times
+ AATCTTC occurs 1 times
+ ACCAGTG occurs 1 times
+ ACCGGAC occurs 1 times
+ ACGACGG occurs 1 times
  ⋮
- GACATGA occurs 1 times
- GCAACTA occurs 1 times
- GCAGGAC occurs 1 times
- GGTCGCA occurs 1 times
- GGTGTCA occurs 1 times
- GTCGCAA occurs 1 times
- GTTGCGA occurs 1 times
- TAGCGAA occurs 1 times
- TCACGCA occurs 1 times</code></pre><p>That&#39;s about all there is for doing basic kmer counting over individual biological sequences in julia.</p><p>Furthur on in this manual we will cover some dedicated kmer counting algorithms MerCounting provides for larger datasets like those contained in reads (using <a href="https://biojulia.net/ReadDatastores.jl/stable">ReadDatastores.jl</a>). We will also cover dedicated types such as kmer frequency spectra, and types useful for projecting kmer coverage and other kmer related metrics over a genome sequence.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../installation/">« Installation</a><a class="docs-footer-nextpage" href="../counting_reads/">Counters for read datasets »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Thursday 7 May 2020 21:59">Thursday 7 May 2020</span>. Using Julia version 1.3.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ GAGTCAA occurs 1 times
+ GGACGAC occurs 1 times
+ GGAGTCA occurs 1 times
+ GGTGGGA occurs 1 times
+ GTCAAAA occurs 1 times
+ GTTCTTA occurs 1 times
+ TCAAAAA occurs 1 times
+ TCTAAGA occurs 1 times
+ TTAGAAA occurs 1 times</code></pre><p>That&#39;s about all there is for doing basic kmer counting over individual biological sequences in julia.</p><p>Furthur on in this manual we will cover some dedicated kmer counting algorithms MerCounting provides for larger datasets like those contained in reads (using <a href="https://biojulia.net/ReadDatastores.jl/stable">ReadDatastores.jl</a>). We will also cover dedicated types such as kmer frequency spectra, and types useful for projecting kmer coverage and other kmer related metrics over a genome sequence.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../installation/">« Installation</a><a class="docs-footer-nextpage" href="../counting_reads/">Counters for read datasets »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 8 May 2020 14:18">Friday 8 May 2020</span>. Using Julia version 1.3.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
