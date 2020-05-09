@@ -22,7 +22,7 @@ Ok, so let's do some very basic kmer counting for a sequence!
 First we need a sequence:
 
 ```@repl acount
-using MerCounting
+using KmerAnalysis
 using BioSequences
 s = randdnaseq(50)
 ```
@@ -58,7 +58,7 @@ the `fwmer` method provided with BioSequences for this purpose.
 collect(fwmer(x) for x in each(DNAMer{7}, s))
 ```
 
-This is quite nice and terse code, but we haven't used MerCounting to help us at
+This is quite nice and terse code, but we haven't used KmerAnalysis to help us at
 all yet. MerCounting allows us to achieve the above with the use of a single
 function called [`collect_mers`](@ref), instead of `collect`ing a generator:
 

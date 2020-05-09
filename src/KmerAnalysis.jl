@@ -25,7 +25,7 @@ export
     
     
 
-using BioSequences, ReadDatastores, Distributed
+using BioSequences, ReadDatastores, Distributed, AbstractPlotting
     
 abstract type CountMode end
 

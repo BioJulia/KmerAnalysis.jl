@@ -1,5 +1,5 @@
 ```@meta
-CurrentModule = MerCounting
+CurrentModule = KmerAnalysis
 ```
 
 # Counting kmers in read datasets
@@ -50,7 +50,7 @@ PairedReads{DNAAlphabet{2}}(fwq, rvq, "ecoli-test-paired", "my-ecoli-test", 250,
 ```
 
 ```@repl serialmem
-using MerCounting, ReadDatastores
+using KmerAnalysis, ReadDatastores
 ds = @openreads "ecoli-test-paired.prseq"
 kl = Counters.serial_mem(DNAMer{31}, ds, CANONICAL)
 ```
@@ -73,7 +73,7 @@ using Distributed
 addprocs(8, exeflags="--project=../../../docs/")
 
 # Make sure the packages are loaded on all the workers.
-@everywhere using MerCounting, ReadDatastores, BioSequences
+@everywhere using KmerAnalysis, ReadDatastores, BioSequences
 
 ds = @openreads "ecoli-test-paired.prseq"
 kl = Counters.dist_mem(DNAMer{31}, ds, CANONICAL)

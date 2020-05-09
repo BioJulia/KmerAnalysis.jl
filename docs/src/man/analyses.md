@@ -5,8 +5,8 @@ be done. Let's go through a few together.
 
 ## Kmer frequency spectra
 
-A kmer frequency spectra is a (often) graphical representation of a dataset
-showing how many kmers in a kmer count dataset appear a certain number of times.
+A kmer frequency spectra is a representation of sequencing data showing how many
+kmers appear a certain number of times.
 In other words, how many kmers in the dataset have a count of 1, how many have a
 count of 10, and so on.
 
@@ -38,11 +38,26 @@ Here I'm going to load in these reads, count the kmers with the [`serial_mem`](@
 kmer counter as the dataset is not that large, and then compute the frequency
 spectra.
 
-```@repl
-using MerCounting, ReadDatastores, BioSequences
+```@repl onedspectra
+using KmerAnalysis, ReadDatastores, BioSequences
 
 reads = @openreads "../../../test/fakemicrobe.prseq"
 kmer_counts = Counters.serial_mem(DNAMer{31}, reads, CANONICAL) 
 
 my_spectra = spectra(kmer_counts)
 ```
+
+At this point you can plot the kmer frequency spectra using Makie, as
+KmerAnalysis.jl includes some AbstractPlotting/Makie recipe's, so you can
+visualise the kmer frequecy spectra quite easily, with several of Makie.jl's
+plotting primitives.
+
+```@repl onedspectra
+using Makie
+
+display(plot(my_spectra))
+```
+
+!!! note
+    Loading and using Makie without any pre-compilation of packages can be a bit
+    slow as the JIT has to compile quite a lot.
