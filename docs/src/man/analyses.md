@@ -39,7 +39,7 @@ kmer counter as the dataset is not that large, and then compute the frequency
 spectra.
 
 ```@repl
-using MerCounting, ReadDatastores, BioSequences
+using KmerAnalysis, ReadDatastores, BioSequences
 
 reads = @openreads "../../../test/fakemicrobe.prseq"
 kmer_counts = Counters.serial_mem(DNAMer{31}, reads, CANONICAL) 
