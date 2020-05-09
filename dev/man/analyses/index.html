@@ -28,4 +28,30 @@ julia&gt; kmer_counts = Counters.serial_mem(DNAMer{31}, reads, CANONICAL)
  TTTTGCTGATCACGTGAGACGATGCACAAAA occurs 20 times
 
 julia&gt; my_spectra = spectra(kmer_counts)
-Count histogram of motifs appearing more than 0 times</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../counting_reads/">« Counters for read datasets</a><a class="docs-footer-nextpage" href="../../api/MerCount/">MerCount »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 9 May 2020 16:22">Saturday 9 May 2020</span>. Using Julia version 1.3.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Count histogram of motifs appearing more than 0 times</code></pre><p>At this point you can plot the kmer frequency spectra using Makie, as KmerAnalysis.jl includes some AbstractPlotting/Makie recipe&#39;s, so you can visualise the kmer frequecy spectra quite easily, with several of Makie.jl&#39;s plotting primitives.</p><pre><code class="language-julia-repl">julia&gt; using Makie
+┌ Warning: Loaded OpenGL Backend, but OpenGL isn&#39;t working
+└ @ GLMakie ~/.julia/packages/GLMakie/S9Zib/src/GLMakie.jl:60
+┌ Warning: Loaded OpenGL Backend, but OpenGL isn&#39;t working
+└ @ GLMakie ~/.julia/packages/GLMakie/S9Zib/src/GLMakie.jl:60
+
+julia&gt; plot(my_spectra)
+[ Info: Makie/AbstractPlotting is caching fonts, this may take a while. Needed only on first run!
+Scene (960px, 540px):
+events:
+    window_area: GeometryBasics.HyperRectangle{2,Int64}([0, 0], [0, 0])
+    window_dpi: 100.0
+    window_open: false
+    mousebuttons: Set(AbstractPlotting.Mouse.Button[])
+    mouseposition: (0.0, 0.0)
+    mousedrag: notpressed
+    scroll: (0.0, 0.0)
+    keyboardbuttons: Set(AbstractPlotting.Keyboard.Button[])
+    unicode_input: Char[]
+    dropped_files: String[]
+    hasfocus: false
+    entered_window: false
+plots:
+   *Axis2D{...}
+   *BarPlot{...}
+subscenes:
+   *scene(960px, 540px)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../counting_reads/">« Counters for read datasets</a><a class="docs-footer-nextpage" href="../../api/MerCount/">MerCount »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 9 May 2020 17:21">Saturday 9 May 2020</span>. Using Julia version 1.3.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
