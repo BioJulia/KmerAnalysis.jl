@@ -10,6 +10,7 @@ Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 ReadDatastores = "70a005b8-9d8a-11e9-0d98-c909fa2e52d2"
 
 [compat]
+AbstractPlotting = "0.10"
 BioSequences = "2"
 ReadDatastores = "0.3"
 
