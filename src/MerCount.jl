@@ -64,29 +64,55 @@ function Base.show(io::IO, mfreq::MerCount{<:AbstractMer})
     print(io, mer(mfreq), " occurs ", freq(mfreq), " times")
 end
 
-function collect_mers(count_mode::CountMode, input::BioSequences.EveryMerIterator)
-    return collect(count_mode(x) for x in input)
+function collect_mers(::Type{M}, count_mode::CountMode, input, args...) where {M<:AbstractMer}
+    out = Vector{M}()
+    return collect_mers!(out, count_mode, input, args...)
 end
 
-function collect_mers(::Type{M}, count_mode::CountMode, input::BioSequence) where {M<:AbstractMer}
-    return collect_mers(count_mode, each(M, input))
-end
+@inline collect_mers(v::Vector{M}) where {M<:AbstractMer} = v
 
-function collect_mers(::Type{M}, count_mode::CountMode, input::DatastoreBuffer{<:PairedReads}, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
+@inline function collect_mers!(out::Vector{M}, count_mode::CountMode, input::DatastoreBuffer{<:PairedReads}, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
     max_read_size = max_read_length(ReadDatastores.datastore(input))
-    v = Vector{M}(undef, length(input) * (max_read_size - BioSequences.ksize(M) + 1))
-    wi = firstindex(v)
+    resize!(out, length(input) * (max_read_size - BioSequences.ksize(M) + 1))
+    wi = firstindex(out)
     read_sequence = eltype(input)()
     @inbounds for i in range
         for mer in each(M, load_sequence!(input, i, read_sequence))
-            v[wi] = count_mode(mer)
+            out[wi] = count_mode(mer)
             wi = wi + 1
         end
     end
-    return resize!(v, wi - 1)
+    return resize!(out, wi - 1)
 end
 
-collect_mers(v::Vector{M}) where {M<:AbstractMer} = v
+@inline function collect_mers!(out::Vector{M}, count_mode::CountMode, input::ReadDatastore, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
+    return collect_mers!(out, count_mode, buffer(input), range)
+end
+
+@inline function collect_mers!(out::Vector{M}, mode::CountMode, seq::BioSequence) where {M<:AbstractMer}
+    expected_n = length(seq) - BioSequences.ksize(M) + 1
+    resize!(out, expected_n)
+    collected = 1
+    @inbounds for mer in each(M, seq)
+        out[collected] = mode(mer)
+        collected += 1
+    end
+    return resize!(out, collected - 1)
+end
+
+@inline function collect_mers!(out::Vector{M}, count_mode::CountMode, seqs::Vector{S}) where {M<:AbstractMer,S<:BioSequence}
+    expected_n = sum(length.(seqs)) - BioSequences.ksize(M) + 1
+    resize!(out, expected_n)
+    wi = firstindex(out)
+    @inbounds for seq in seqs
+        for mer in each(M, seq)
+            out[wi] = count_mode(mer)
+            wi = wi + 1
+        end
+    end
+    return resize!(out, wi - 1)
+end
+
 
 """
     unsafe_collapse_into_counts!(result::Vector{MerCount{M}}, mers::Vector{M}) where {M<:AbstractMer}

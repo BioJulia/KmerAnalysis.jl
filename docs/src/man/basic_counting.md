@@ -1,5 +1,5 @@
 ```@meta
-CurrentModule = MerCounting
+CurrentModule = KmerAnalysis
 ```
 
 # Basic types and basic kmer counting

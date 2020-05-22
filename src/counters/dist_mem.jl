@@ -7,18 +7,7 @@ function _do_serial_mem(::Type{M}, ::Type{D}, filename::String, count_mode::Coun
     return counts
 end
 
-"""
-The multi-process parallel version of the [`serial_mem`](@ref) kmer counter.
-
-Like [`serial_mem`](@ref) this counter does all counting and processing in memory,
-so it is not designed to limit memory use, but if using a cluster of machines the
-memory used per worker machine would be less. Of course the data is copied back
-over to the master process and the results combined and so the master node has
-to have enough RAM available to hold all the result.
-"""
-function dist_mem end
-
-function dist_mem(::Type{M}, ::Type{D}, filename::String, count_mode::CountMode) where {M<:AbstractMer,D<:ReadDatastore}
+function _dist_mem(::Type{M}, ::Type{D}, filename::String, count_mode::CountMode) where {M<:AbstractMer,D<:ReadDatastore}
     nw = nworkers()
     @info "Splitting all reads in $filename, across $nw worker processes and counting kmers"
     if nw === 1
@@ -39,10 +28,30 @@ function dist_mem(::Type{M}, ::Type{D}, filename::String, count_mode::CountMode)
     return final_count
 end
 
-function dist_mem(::Type{M}, input::ReadDatastore, count_mode::CountMode) where {M<:AbstractMer}
-    return dist_mem(M, typeof(input), input.filename, count_mode)
+function _dist_mem(::Type{M}, input::ReadDatastore, count_mode::CountMode) where {M<:AbstractMer}
+    return _dist_mem(M, typeof(input), input.filename, count_mode)
 end
 
-function dist_mem(::Type{M}, input::DatastoreBuffer{<:ReadDatastore}, count_mode::CountMode) where {M<:AbstractMer}
-    return dist_mem(M, ReadDatastores.datastore(input), count_mode)
+function _dist_mem(::Type{M}, input::DatastoreBuffer{<:ReadDatastore}, count_mode::CountMode) where {M<:AbstractMer}
+    return _dist_mem(M, ReadDatastores.datastore(input), count_mode)
+end
+
+"""
+The multi-process parallel version of the [`SerialMemCounter`](@ref) k-mer counter.
+
+Like the [`SerialMemCounter`](@ref) this counter does all counting and processing
+in memory, so it is not designed to limit memory use, but if using a cluster of
+machines the memory used per worker machine would be less. Of course the data is
+copied back over to the master process and the results combined and so the master
+node has to have enough RAM available to hold all the result.
+"""
+struct DistMemCounter{M<:AbstractMer,C<:CountMode} <: AbstractKmerCounter{M}
+end
+
+function dist_mem(::Type{M}, mode::C) where {M<:AbstractMer,C<:CountMode}
+    return DistMemCounter{M,C}()
+end
+
+function (dmc::DistMemCounter{M,C})(input) where {M<:AbstractMer,C}
+    return _dist_mem(M, input, C())
 end

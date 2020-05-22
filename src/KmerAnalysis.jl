@@ -6,8 +6,8 @@ export
     CANONICAL,
     NonCanonical,
     NONCANONICAL,
-    IndexedCounts,
     
+    # MerCount
     MerCount,
     mer,
     freq,
@@ -16,16 +16,26 @@ export
     collapse_into_counts,
     collapse_into_counts!,
     collect_mers,
+    collect_mers!,
     
-    Counters,
+    # Counters
+    serial_mem,
+    count!,
+    dist_mem,
     
-    # Kmer frequency spectra
+    # K-mer frequency spectra
+    KmerFrequencySpectra,
     spectra,
-    spectra!
+    spectra!,
+    find_next_peak,
+    find_spectra_peaks,
     
-    
+    # Indexed k-mer counts
+    IndexedCounts,
+    add_count!,
+    project_count
 
-using BioSequences, ReadDatastores, Distributed, AbstractPlotting
+using BioSequences, ReadDatastores, Distributed
     
 abstract type CountMode end
 
@@ -38,8 +48,11 @@ struct NonCanonical <: CountMode end
 const CANONICAL = Canonical()
 const NONCANONICAL = NonCanonical()
 
+abstract type AbstractKmerCounter{M<:AbstractMer} <: Function end
+
 include("MerCount.jl")
-include("counters/Counters.jl")
+include("counters/serial_mem.jl")
+include("counters/dist_mem.jl")
 include("KmerFrequencySpectra.jl")
 include("IndexedCounts.jl")
 

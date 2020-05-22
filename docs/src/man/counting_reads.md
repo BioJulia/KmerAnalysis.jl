@@ -2,34 +2,34 @@
 CurrentModule = KmerAnalysis
 ```
 
-# Counting kmers in read datasets
+# Counting k-mers in read datasets
 
-MerCounting provides some more dedicated counting algorithms for counting kmers
+MerCounting provides some more dedicated counting algorithms for counting k-mers
 in read datasets, particularly ReadDatastores.
 
-This is because as conceptually simple as counting kmers is, to do it quickly
+This is because as conceptually simple as counting k-mers is, to do it quickly
 for large sequencing read datasets output by sequencing machines can be
 difficult for some datasets.
 
-There are many ways you can try to optimise the kmer counting process, and many
-kmer counting tools already exist.
+There are many ways you can try to optimise the k-mer counting process, and many
+k-mer counting tools already exist.
 
 MerCounting provides a `Counters` submodule, which contains nessecery methods
-and types required to implement various kinds of kmer counter, as well as
+and types required to implement various kinds of k-mer counter, as well as
 exporting a selection of "off-the-shelf" methods that use different counting
 strategies, one or several of which hopefully suit the user's dataset and
 computational resources available. We describe and showcase these below.
 
-## The `serial_mem` counter
+## The `SerialMemCounter` counter
 
-The [`serial_mem`](@ref) counter is the simplest kmer counter for reads that
+The [`SerialMemCounter`](@ref) counter is the simplest k-mer counter for reads that
 is provided.
 
-It counts kmers in each read serially, and stores the kmers and counts entirely
+It counts k-mers in each read serially, and stores the k-mers and counts entirely
 in RAM.
 
 ```@docs
-Counters.serial_mem
+SerialMemCounter
 ```
 
 It is fairly simple to use. First you need a ReadDatastore, if you need to
@@ -37,8 +37,8 @@ recall how to create one then head over
 to [here](https://biojulia.net/ReadDatastores.jl/stable/build-datastores/) in
 ReadDatastores.jl's documentation.
 
-The example below opens a datastore before using [`serial_mem`](@ref) to count
-the kmers in the read datastore.
+The example below opens a datastore before creating a [`SerialMemCounter`](@ref)
+with [`serial_mem`](@ref), to count the k-mers in the read datastore.
 
 ```@setup serialmem
 using ReadDatastores
@@ -52,15 +52,16 @@ PairedReads{DNAAlphabet{2}}(fwq, rvq, "ecoli-test-paired", "my-ecoli-test", 250,
 ```@repl serialmem
 using KmerAnalysis, ReadDatastores
 ds = @openreads "ecoli-test-paired.prseq"
-kl = Counters.serial_mem(DNAMer{31}, ds, CANONICAL)
+c = serial_mem(DNAMer{31}, CANONICAL)
+kl = c(ds)
 ```
 
 ## The `dist_mem` counter
 
-The [`dist_mem`](@ref) counter is a multi-process version of [`serial_mem`](@ref).
+The [`DistMemCounter`](@ref) counter is a multi-process version of [`SerialMemCounter`](@ref).
 
 ```@docs
-Counters.dist_mem
+DistMemCounter
 ```
 
 It is used in a very similar fashion to [`serial_mem`](@ref), but you need to
@@ -76,9 +77,10 @@ addprocs(8, exeflags="--project=../../../docs/")
 @everywhere using KmerAnalysis, ReadDatastores, BioSequences
 
 ds = @openreads "ecoli-test-paired.prseq"
-kl = Counters.dist_mem(DNAMer{31}, ds, CANONICAL)
+dmc = dist_mem(DNAMer{31}, CANONICAL)
+kl = dmc(ds)
 ```
 
-Naturally, for such a small and simple example as this, using [`dist_mem`](@ref)
+Naturally, for such a small and simple example as this, using [`DistMemCounter`](@ref)
 for such a small dataset is probably just worse than doing it in memory serially,
 because of the overheads. For real datasets you should see a benefit.

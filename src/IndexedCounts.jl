@@ -35,7 +35,7 @@ function _count_and_collapse!(mers::Vector{M}, counts::Vector{UInt16}) where {M<
         push!(counts, ci)
         wi = wi + 1
     end
-    resize!(mers, ri)
+    resize!(mers, wi - 1)
     return nothing
 end
 
@@ -76,4 +76,57 @@ end
 
 function Base.show(io::IO, mc::IndexedCounts{M}) where {M}
     summary(io, mc)
+end
+
+"""
+    add_count!(mc::IndexedCounts{M}, name::Symbol, reads::ReadDatastore) where {M}
+
+Count the k-mers in a ReadDatastore and add them to the IndexedCounts{M}.
+
+Currently IndexedCounts use a serial and in-memory counting method, as 
+
+!!! note
+    Only the k-mers in the IndexedCounts' index shall be counted from the reads. 
+"""
+function add_count!(mc::IndexedCounts{M,C}, name::Symbol, reads::ReadDatastore) where {M,C}
+    mode = C()
+    # TODO: Check if name already exists.
+    push!(mc.count_names, name)
+    c = zeros(UInt16, length(mc.mer_index))
+    push!(mc.counts, c)
+    # Populate lookup map.
+    kmer_map = Dict{M, Int}()
+    sizehint!(kmer_map, length(mc.mer_index))
+    for (i, j) in enumerate(mc.mer_index)
+        kmer_map[j] = i
+    end
+    for read in reads
+        for mer in each(M, read)
+            findk = get(kmer_map, mode(mer), 0)
+            @inbounds if findk > 0
+                old = c[findk]
+                inc = old + one(UInt16)
+                c[findk] = ifelse(old > inc, typemax(UInt16), inc)
+            end
+        end
+    end
+end
+
+function project_count(mc::IndexedCounts{M,C}, name::Symbol, sequence::BioSequence) where {M,C}
+    countidx = findfirst(isequal(name), mc.count_names)
+    if isnothing(countidx)
+        throw(ArgumentError(string("No count dataset called", string(name), "exists")))
+    end
+    counts = mc.counts[countidx]
+    querymers = collect_mers(M, C(), sequence)
+    projection = zeros(UInt16, length(querymers))
+    indexsize = length(mc.mer_index)
+    index = mc.mer_index
+    for (i, mer) in enumerate(querymers)
+        kidx = min(searchsortedfirst(index, mer), indexsize)
+        if index[kidx] === mer
+            projection[i] = counts[kidx]
+        end
+    end
+    return projection
 end

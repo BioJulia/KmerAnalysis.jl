@@ -14,7 +14,8 @@ makedocs(
             "Analysing Kmer count data" => "man/analyses.md"
         ],
         "API" => [
-            "MerCount" => "api/MerCount.md"
+            "MerCount" => "api/MerCount.md",
+            "KmerFrequencySpectra" => "api/KmerFrequencySpectra.md"
         ]
     ],
     
