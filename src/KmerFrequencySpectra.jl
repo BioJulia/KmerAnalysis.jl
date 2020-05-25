@@ -129,7 +129,7 @@ function spectra(freqs::Vector{MerCount{M}}, min_count::Integer = 0) where {M<:A
 end
 
 function spectra(c::C, input, min_count::Integer = 0) where {C<:AbstractKmerCounter}
-    return spectra(counter(input), min_count)
+    return spectra(c(input), min_count)
 end
 
 """

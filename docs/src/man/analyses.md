@@ -55,21 +55,6 @@ method along with the reads like so:
 my_spectra = spectra(counter, reads)
 ```
 
-At this point you can plot the k-mer frequency spectra using Makie.jl, as
-KmerAnalysis.jl includes some AbstractPlotting/Makie recipe's, so you can
-visualise the k-mer frequency spectra quite easily, with several of Makie.jl's
-plotting primitives.
-
-```julia
-using Makie
-
-plot(my_spectra)
-```
-
-!!! note
-    Loading and using Makie without any pre-compilation of packages can be a bit
-    slow as the JIT has to compile quite a lot.
-
 ## Kmer count projection
 
 KmerAnalysis includes a k-mer count container type called IndexedCounts.

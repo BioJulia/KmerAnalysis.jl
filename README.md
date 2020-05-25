@@ -3,22 +3,29 @@
 [![Latest release](https://img.shields.io/github/release/BioJulia/KmerAnalysis.svg)](https://github.com/BioJulia/KmerAnalysis/releases/latest)
 [![MIT license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/BioJulia/KmerAnalysis.jl/blob/master/LICENSE) 
 [![Stable documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://biojulia.github.io/KmerAnalysis.jl/stable)
-[![Pkg Status](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
+[![Pkg Status](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![Chat](https://img.shields.io/gitter/room/BioJulia/KmerAnalysis.svg)](https://gitter.im/BioJulia/KmerAnalysis)
 
 
 ## Description
 
+A k-mer counting and analysis tool-box for Julia.
+
+Provides k-mer counting utilities, as well as k-mer spectra and coverage analysis routines.
 
 ## Installation
 
-KmerAnalysis is currently in **pre-alpha** development.
-But you can clone KmerAnalysis from the Julia REPL:
+You can install KmerAnalysis from the julia REPL. Press `]` to enter pkg mode
+again, and enter the following:
 
-```julia
-julia> Pkg.clone("https://github.com/BioJulia/KmerAnalysis.jl.git")
+```
+pkg> add KmerAnalysis
 ```
 
+To add it to your environment.
+
+You may also want the addon package KmerAnalysisMakie, which provides
+AbstractPlotting recipes for the types in this package.
 
 ## Testing
 
@@ -26,6 +33,7 @@ KmerAnalysis is tested against Julia `1.X` on Linux, OS X, and Windows.
 
 **Latest build status:**
 
+[![](https://travis-ci.com/BioJulia/KmerAnalysis.jl.svg?branch=master)](https://travis-ci.com/BioJulia/KmerAnalysis.jl)
 ![](https://github.com/BioJulia/KmerAnalysis.jl/workflows/Unit%20testing/badge.svg)
 ![](https://github.com/BioJulia/KmerAnalysis.jl/workflows/Documentation/badge.svg)
 

@@ -69,8 +69,6 @@ function collect_mers(::Type{M}, count_mode::CountMode, input, args...) where {M
     return collect_mers!(out, count_mode, input, args...)
 end
 
-@inline collect_mers(v::Vector{M}) where {M<:AbstractMer} = v
-
 @inline function collect_mers!(out::Vector{M}, count_mode::CountMode, input::DatastoreBuffer{<:PairedReads}, range::AbstractRange = 1:length(input)) where {M<:AbstractMer}
     max_read_size = max_read_length(ReadDatastores.datastore(input))
     resize!(out, length(input) * (max_read_size - BioSequences.ksize(M) + 1))
@@ -169,18 +167,6 @@ kmer counting procedures.
 """
 function collapse_into_counts!(mers::Vector{M}) where {M<:AbstractMer}
     return collapse_into_counts!(Vector{MerCount{M}}(), mers)
-end
-
-# The dispatch here could be a little better. - Distinguising between Mer iterators and
-# non mer iterators perhaps.
-function Vector{MerCount{M}}(mode::CountMode, input::BioSequences.EveryMerIterator{M}) where {M<:AbstractMer}
-    mers = collect_mers(mode, input)
-    return collapse_into_counts!(mers)
-end
-
-function Vector{MerCount{M}}(mode::CountMode, input::Any, args...) where {M<:AbstractMer}
-    mers = collect_mers(M, mode, input, args...)
-    return collapse_into_counts!(mers)
 end
 
 """
