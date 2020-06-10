@@ -1,7 +1,7 @@
 name = "KmerAnalysis"
 uuid = "a20136b7-8e32-4c10-91d3-7060c0bd8ec7"
 authors = ["Ben J. Ward <benjward@protonmail.com>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
@@ -11,7 +11,7 @@ ReadDatastores = "70a005b8-9d8a-11e9-0d98-c909fa2e52d2"
 [compat]
 julia = "1.3"
 BioSequences = "2"
-ReadDatastores = "0.3"
+ReadDatastores = "0.4"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
