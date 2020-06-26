@@ -5,99 +5,99 @@ julia&gt; using BioSequences
 
 julia&gt; s = randdnaseq(50)
 50nt DNA Sequence:
-GACGGAGCCAAGGCACGGGACCTGTGAATCTACAGGTATTGCCTTCGCTG</code></pre><p>Ok, let&#39;s say we wanted to count the 7-mers, we can collect all the 7-mers using BioSequences&#39; kmer iterator:</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect(each(DNAMer{7}, s))
+TAGTGTGTCAGAGGCATGGAGTCTTAGACTCGCGAGGTGTTAGCTAAGGG</code></pre><p>Ok, let&#39;s say we wanted to count the 7-mers, we can collect all the 7-mers using BioSequences&#39; kmer iterator:</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect(each(DNAMer{7}, s))
 44-element Array{BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}},1}:
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(1, GACGGAG, CTCCGTC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(2, ACGGAGC, GCTCCGT)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(3, CGGAGCC, GGCTCCG)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(4, GGAGCCA, TGGCTCC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(5, GAGCCAA, TTGGCTC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(6, AGCCAAG, CTTGGCT)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(7, GCCAAGG, CCTTGGC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(8, CCAAGGC, GCCTTGG)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(9, CAAGGCA, TGCCTTG)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(10, AAGGCAC, GTGCCTT)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(1, TAGTGTG, CACACTA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(2, AGTGTGT, ACACACT)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(3, GTGTGTC, GACACAC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(4, TGTGTCA, TGACACA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(5, GTGTCAG, CTGACAC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(6, TGTCAGA, TCTGACA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(7, GTCAGAG, CTCTGAC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(8, TCAGAGG, CCTCTGA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(9, CAGAGGC, GCCTCTG)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(10, AGAGGCA, TGCCTCT)
  ⋮
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(36, GTATTGC, GCAATAC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(37, TATTGCC, GGCAATA)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(38, ATTGCCT, AGGCAAT)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(39, TTGCCTT, AAGGCAA)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(40, TGCCTTC, GAAGGCA)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(41, GCCTTCG, CGAAGGC)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(42, CCTTCGC, GCGAAGG)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(43, CTTCGCT, AGCGAAG)
- BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(44, TTCGCTG, CAGCGAA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(36, GGTGTTA, TAACACC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(37, GTGTTAG, CTAACAC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(38, TGTTAGC, GCTAACA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(39, GTTAGCT, AGCTAAC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(40, TTAGCTA, TAGCTAA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(41, TAGCTAA, TTAGCTA)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(42, AGCTAAG, CTTAGCT)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(43, GCTAAGG, CCTTAGC)
+ BioSequences.MerIterResult{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}}(44, CTAAGGG, CCCTTAG)
 
 julia&gt; sevenmers[1]
 Mer iteration result:
 Position: 1
-Forward: GACGGAG
-Backward: CTCCGTC</code></pre><p>Ok BioSequences&#39; kmer iterator on its own yields a <code>MerIterResult</code>, which contains a tuple of (Base position in sequence, kmer, reverse complement of the kmer).</p><p>Now let&#39;s say I was only interested in counting canonical kmers in <code>s</code>. For any kmer and its reverse complement, the canonical version is the one that is lexicographically less.</p><p>So let&#39;s revise our <code>collect</code> above to give us a vector of the canonical kmers. Thankfully, BioSequences comes with a method called <code>canonical</code>, for exactly this purpose.</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect(canonical(x) for x in each(DNAMer{7}, s))
+Forward: TAGTGTG
+Backward: CACACTA</code></pre><p>Ok BioSequences&#39; kmer iterator on its own yields a <code>MerIterResult</code>, which contains a tuple of (Base position in sequence, kmer, reverse complement of the kmer).</p><p>Now let&#39;s say I was only interested in counting canonical kmers in <code>s</code>. For any kmer and its reverse complement, the canonical version is the one that is lexicographically less.</p><p>So let&#39;s revise our <code>collect</code> above to give us a vector of the canonical kmers. Thankfully, BioSequences comes with a method called <code>canonical</code>, for exactly this purpose.</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect(canonical(x) for x in each(DNAMer{7}, s))
 44-element Array{BioSequences.Mer{BioSequences.DNAAlphabet{2},7},1}:
- CTCCGTC
- ACGGAGC
- CGGAGCC
- GGAGCCA
- GAGCCAA
- AGCCAAG
- CCTTGGC
- CCAAGGC
- CAAGGCA
- AAGGCAC
+ CACACTA
+ ACACACT
+ GACACAC
+ TGACACA
+ CTGACAC
+ TCTGACA
+ CTCTGAC
+ CCTCTGA
+ CAGAGGC
+ AGAGGCA
  ⋮
- GCAATAC
- GGCAATA
- AGGCAAT
- AAGGCAA
- GAAGGCA
- CGAAGGC
- CCTTCGC
- AGCGAAG
- CAGCGAA</code></pre><p>If you wanted to collect all the kmers in <code>s</code> &quot;as is&quot; as it were, you can use the <code>fwmer</code> method provided with BioSequences for this purpose.</p><pre><code class="language-julia-repl">julia&gt; collect(fwmer(x) for x in each(DNAMer{7}, s))
+ GGTGTTA
+ CTAACAC
+ GCTAACA
+ AGCTAAC
+ TAGCTAA
+ TAGCTAA
+ AGCTAAG
+ CCTTAGC
+ CCCTTAG</code></pre><p>If you wanted to collect all the kmers in <code>s</code> &quot;as is&quot; as it were, you can use the <code>fwmer</code> method provided with BioSequences for this purpose.</p><pre><code class="language-julia-repl">julia&gt; collect(fwmer(x) for x in each(DNAMer{7}, s))
 44-element Array{BioSequences.Mer{BioSequences.DNAAlphabet{2},7},1}:
- GACGGAG
- ACGGAGC
- CGGAGCC
- GGAGCCA
- GAGCCAA
- AGCCAAG
- GCCAAGG
- CCAAGGC
- CAAGGCA
- AAGGCAC
+ TAGTGTG
+ AGTGTGT
+ GTGTGTC
+ TGTGTCA
+ GTGTCAG
+ TGTCAGA
+ GTCAGAG
+ TCAGAGG
+ CAGAGGC
+ AGAGGCA
  ⋮
- GTATTGC
- TATTGCC
- ATTGCCT
- TTGCCTT
- TGCCTTC
- GCCTTCG
- CCTTCGC
- CTTCGCT
- TTCGCTG</code></pre><p>This is quite nice and terse code, but we haven&#39;t used KmerAnalysis to help us at all yet. MerCounting allows us to achieve the above with the use of a single function called <a href="man/@ref"><code>collect_mers</code></a>, instead of <code>collect</code>ing a generator:</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect_mers(CANONICAL, each(DNAMer{7}, s))
+ GGTGTTA
+ GTGTTAG
+ TGTTAGC
+ GTTAGCT
+ TTAGCTA
+ TAGCTAA
+ AGCTAAG
+ GCTAAGG
+ CTAAGGG</code></pre><p>This is quite nice and terse code, but we haven&#39;t used KmerAnalysis to help us at all yet. MerCounting allows us to achieve the above with the use of a single function called <a href="man/@ref"><code>collect_mers</code></a>, instead of <code>collect</code>ing a generator:</p><pre><code class="language-julia-repl">julia&gt; sevenmers = collect_mers(CANONICAL, each(DNAMer{7}, s))
 ERROR: MethodError: no method matching collect_mers(::Canonical, ::BioSequences.EveryMerIterator{BioSequences.Mer{BioSequences.DNAAlphabet{2},7},BioSequences.LongSequence{BioSequences.DNAAlphabet{4}}})</code></pre><p>There are a few different methods of <a href="man/@ref"><code>collect_mers</code></a> for different types of input, check out the API reference for more info.</p><p>MerCounting exports <code>CANONICAL</code> and <code>NONCANONICAL</code>, which work with <a href="man/@ref"><code>collect_mers</code></a> and other MerCounting functions to dictate how the kmers are produced.</p><p>Ok so we have our canonical kmers, how can we count them? Well one of the ways to count the number of distinct values in a vector is to sort it and traverse it in one go. The <a href="../../api/MerCount/#KmerAnalysis.collapse_into_counts!"><code>collapse_into_counts!</code></a> methods do this for you.</p><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p><a href="../../api/MerCount/#KmerAnalysis.collapse_into_counts!"><code>collapse_into_counts!</code></a> will sort the input <code>sevenmers</code> vector in place.</p></div></div><pre><code class="language-julia-repl">julia&gt; mercounts = collapse_into_counts!(sevenmers)
-44-element Array{MerCount{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}},1}:
- AAGGCAA occurs 1 times
- AAGGCAC occurs 1 times
- AATACCT occurs 1 times
- AATCTAC occurs 1 times
- ACAGGTA occurs 1 times
- ACAGGTC occurs 1 times
- ACCTGTA occurs 1 times
- ACCTGTG occurs 1 times
- ACGGAGC occurs 1 times
- ACGGGAC occurs 1 times
+42-element Array{MerCount{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}},1}:
+ AACACCT occurs 1 times
+ AAGACTC occurs 1 times
+ ACACACT occurs 1 times
+ ACACCTC occurs 1 times
+ ACCTCGC occurs 1 times
+ ACTCCAT occurs 1 times
+ ACTCGCG occurs 1 times
+ AGACTCC occurs 1 times
+ AGACTCG occurs 1 times
+ AGAGGCA occurs 1 times
  ⋮
- CTGTAGA occurs 1 times
- CTGTGAA occurs 1 times
- GAAGGCA occurs 1 times
- GAATCTA occurs 1 times
- GAGCCAA occurs 1 times
- GATTCAC occurs 1 times
- GCAATAC occurs 1 times
- GGAGCCA occurs 1 times
- GGCAATA occurs 1 times</code></pre><p>Looks like every distinct kmer appeared once, with the possible odd exceptions. Well that&#39;s to be expected! We did just do this with a single 50bp long random sequence after all!</p><p>So for any sequence or input we want to count kmers for, we have to <a href="man/@ref"><code>collect_mers</code></a> and then collapse them into counts with <a href="../../api/MerCount/#KmerAnalysis.collapse_into_counts!"><code>collapse_into_counts!</code></a>.</p><p>For convenience and more terse code, MerCounting provides a constructor for vectors of <a href="../../api/MerCount/#KmerAnalysis.MerCount"><code>MerCount</code></a> that does this for you.</p><pre><code class="language-julia-repl">julia&gt; v = Vector{MerCount{DNAMer{7}}}(CANONICAL, s)
+ GACTCGC occurs 1 times
+ GAGTCTA occurs 1 times
+ GCATGGA occurs 1 times
+ GCTAACA occurs 1 times
+ GGTGTTA occurs 1 times
+ TAGCTAA occurs 2 times
+ TCTAAGA occurs 1 times
+ TCTGACA occurs 1 times
+ TGACACA occurs 1 times</code></pre><p>Looks like every distinct kmer appeared once, with the possible odd exceptions. Well that&#39;s to be expected! We did just do this with a single 50bp long random sequence after all!</p><p>So for any sequence or input we want to count kmers for, we have to <a href="man/@ref"><code>collect_mers</code></a> and then collapse them into counts with <a href="../../api/MerCount/#KmerAnalysis.collapse_into_counts!"><code>collapse_into_counts!</code></a>.</p><p>For convenience and more terse code, MerCounting provides a constructor for vectors of <a href="../../api/MerCount/#KmerAnalysis.MerCount"><code>MerCount</code></a> that does this for you.</p><pre><code class="language-julia-repl">julia&gt; v = Vector{MerCount{DNAMer{7}}}(CANONICAL, s)
 ERROR: MethodError: no method matching Array{MerCount{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}},1}(::Canonical, ::BioSequences.LongSequence{BioSequences.DNAAlphabet{4}})
 Closest candidates are:
   Array{MerCount{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}},1}(!Matched::Nothing, ::Any...) where {T, N} at baseext.jl:31
-  Array{MerCount{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}},1}(!Matched::Missing, ::Any...) where {T, N} at baseext.jl:32</code></pre><p>That&#39;s about all there is for doing basic kmer counting over individual biological sequences in julia.</p><p>Furthur on in this manual we will cover some dedicated kmer counting algorithms MerCounting provides for larger datasets like those contained in reads (using <a href="https://biojulia.net/ReadDatastores.jl/stable">ReadDatastores.jl</a>). We will also cover dedicated types such as kmer frequency spectra, and types useful for projecting kmer coverage and other kmer related metrics over a genome sequence.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../installation/">« Installation</a><a class="docs-footer-nextpage" href="../counting_reads/">Counters for read datasets »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 26 June 2020 16:46">Friday 26 June 2020</span>. Using Julia version 1.3.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  Array{MerCount{BioSequences.Mer{BioSequences.DNAAlphabet{2},7}},1}(!Matched::Missing, ::Any...) where {T, N} at baseext.jl:32</code></pre><p>That&#39;s about all there is for doing basic kmer counting over individual biological sequences in julia.</p><p>Furthur on in this manual we will cover some dedicated kmer counting algorithms MerCounting provides for larger datasets like those contained in reads (using <a href="https://biojulia.net/ReadDatastores.jl/stable">ReadDatastores.jl</a>). We will also cover dedicated types such as kmer frequency spectra, and types useful for projecting kmer coverage and other kmer related metrics over a genome sequence.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../installation/">« Installation</a><a class="docs-footer-nextpage" href="../counting_reads/">Counters for read datasets »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 26 June 2020 16:47">Friday 26 June 2020</span>. Using Julia version 1.3.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
