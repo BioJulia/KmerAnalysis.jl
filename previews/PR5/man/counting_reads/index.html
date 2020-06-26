@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Counters for read datasets · KmerAnalysis.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">KmerAnalysis.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../installation/">Installation</a></li><li><a class="tocitem" href="../basic_counting/">Basic types and counting</a></li><li class="is-active"><a class="tocitem" href>Counters for read datasets</a><ul class="internal"><li><a class="tocitem" href="#The-SerialMemCounter-counter-1"><span>The <code>SerialMemCounter</code> counter</span></a></li><li><a class="tocitem" href="#The-dist_mem-counter-1"><span>The <code>dist_mem</code> counter</span></a></li></ul></li><li><a class="tocitem" href="../analyses/">Analysing Kmer count data</a></li></ul></li><li><span class="tocitem">API</span><ul><li><a class="tocitem" href="../../api/MerCount/">MerCount</a></li><li><a class="tocitem" href="../../api/KmerFrequencySpectra/">KmerFrequencySpectra</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Counters for read datasets</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Counters for read datasets</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/BioJulia/KmerAnalysis.jl/blob/master/docs/src/man/counting_reads.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Counting-k-mers-in-read-datasets-1"><a class="docs-heading-anchor" href="#Counting-k-mers-in-read-datasets-1">Counting k-mers in read datasets</a><a class="docs-heading-anchor-permalink" href="#Counting-k-mers-in-read-datasets-1" title="Permalink"></a></h1><p>MerCounting provides some more dedicated counting algorithms for counting k-mers in read datasets, particularly ReadDatastores.</p><p>This is because as conceptually simple as counting k-mers is, to do it quickly for large sequencing read datasets output by sequencing machines can be difficult for some datasets.</p><p>There are many ways you can try to optimise the k-mer counting process, and many k-mer counting tools already exist.</p><p>MerCounting provides a <code>Counters</code> submodule, which contains nessecery methods and types required to implement various kinds of k-mer counter, as well as exporting a selection of &quot;off-the-shelf&quot; methods that use different counting strategies, one or several of which hopefully suit the user&#39;s dataset and computational resources available. We describe and showcase these below.</p><h2 id="The-SerialMemCounter-counter-1"><a class="docs-heading-anchor" href="#The-SerialMemCounter-counter-1">The <code>SerialMemCounter</code> counter</a><a class="docs-heading-anchor-permalink" href="#The-SerialMemCounter-counter-1" title="Permalink"></a></h2><p>The <a href="#KmerAnalysis.SerialMemCounter"><code>SerialMemCounter</code></a> counter is the simplest k-mer counter for reads that is provided.</p><p>It counts k-mers in each read serially, and stores the k-mers and counts entirely in RAM.</p><article class="docstring"><header><a class="docstring-binding" id="KmerAnalysis.SerialMemCounter" href="#KmerAnalysis.SerialMemCounter"><code>KmerAnalysis.SerialMemCounter</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia">SerialMemCounter{M&lt;:AbstractMer,C&lt;:CountMode}</code></pre><p>KmerAnalysis&#39; simplest kmer counter.</p><p>Build a sorted list (vector) of kmer counts (MerCount), serially and entirely in memory.</p><p>Build a SerialMemCounter using the <a href="man/@ref"><code>serial_mem</code></a> method. This returns a SerialMemCounter.</p><p>A SerialMemCounter can be treated as a function or functor and passed to other functions as an argument, and it can be called on other arguments.</p><p>It is a general purpose kmer counting method:</p><p>It basically collects all the kmers from iterating over the input, before sorting the collected kmers and collapsing them into counts. To reduce allocations and  GC from many repeated calls of a SerialMemCounter, they keep a few buffers that are used often for kmer collection and count collapsing. </p><p>Whilst general purpose for a variety of argument types, it is most suitable for:</p><ol><li><p>Counting the kmers in a small number of long-ish <code>BioSequences</code> (e.g. a reference genome or low(ish)-complexity genome graph.).</p></li><li><p>Counting the kmers in a ReadDatastore if the dataset size is small enough such that all the kmers collected from every dataset can fit in a single machines memory. If you have a decent MacBook Pro, for example, datasets like <em>E. coli</em> paired end sequencing reads will be no problem.</p></li><li><p>Other larger ReadDatastores IF you have the RAM to throw at it, e.g. you&#39;re on a HPC machine configured for large memory jobs.</p></li></ol></div></section></article><p>It is fairly simple to use. First you need a ReadDatastore, if you need to recall how to create one then head over to <a href="https://biojulia.net/ReadDatastores.jl/stable/build-datastores/">here</a> in ReadDatastores.jl&#39;s documentation.</p><p>The example below opens a datastore before creating a <a href="#KmerAnalysis.SerialMemCounter"><code>SerialMemCounter</code></a> with <a href="man/@ref"><code>serial_mem</code></a>, to count the k-mers in the read datastore.</p><pre><code class="language-julia-repl">julia&gt; using KmerAnalysis, ReadDatastores
+
+julia&gt; ds = @openreads &quot;ecoli-test-paired.prseq&quot;
+Paired Read Datastore &#39;my-ecoli-test&#39;: 20 reads (10 pairs)
+
+julia&gt; c = serial_mem(DNAMer{31}, CANONICAL)
+(::KmerAnalysis.SerialMemCounter{BioSequences.Mer{BioSequences.DNAAlphabet{2},31},Canonical}) (generic function with 1 method)
+
+julia&gt; kl = c(ds)
+4916-element Array{MerCount{BioSequences.Mer{BioSequences.DNAAlphabet{2},31}},1}:
+ AAAAAAAAGTAATCGTCGGCATGTCCGGCGG occurs 1 times
+ AAAAAAAGTAATCGTCGGCATGTCCGGCGGT occurs 1 times
+ AAAAAAATAAAATTTAGTGCTGTACAGAGCG occurs 1 times
+ AAAAAAGTAATCGTCGGCATGTCCGGCGGTG occurs 1 times
+ AAAAAATAAAATTTAGTGCTGTACAGAGCGC occurs 1 times
+ AAAAAATCCACCAGCAGCAGGTTGATGTCAG occurs 1 times
+ AAAAAATCGACCAGGAGCGGTTGGATGACAG occurs 1 times
+ AAAAAATCGTTGCGCTTTTTCTCGCCGCCGG occurs 1 times
+ AAAAACATCGCGGGTGTTGAAGAAAAATTAA occurs 1 times
+ AAAAACCAACGTTTACCGAACGGGTTAATAA occurs 2 times
+ ⋮
+ TTCGGCGTGCGACCGGCTTTATATTCGGCAA occurs 1 times
+ TTCTGGCTGAAGAGGTGGTGGAAATTCCCAA occurs 1 times
+ TTCTTGCTTAAGAGGTGGTGGAAATTCCCAA occurs 1 times
+ TTGCCATTACCTATGTCTACAAAGGTGACAA occurs 1 times
+ TTGCGAACAATTATTCCCCATGCTTCAGCAA occurs 1 times
+ TTGCGCTTTTTCTCGCCGCCGGAAAAACCAA occurs 2 times
+ TTGGCAGCATCTTCTTTGGTGGTTGCACCAA occurs 1 times
+ TTGTCCCAACACATGTGCCAGCCGATAAAAA occurs 1 times
+ TTTGATTTTCAGGATTTGATGGAAGAGAAAA occurs 1 times</code></pre><h2 id="The-dist_mem-counter-1"><a class="docs-heading-anchor" href="#The-dist_mem-counter-1">The <code>dist_mem</code> counter</a><a class="docs-heading-anchor-permalink" href="#The-dist_mem-counter-1" title="Permalink"></a></h2><p>The <a href="#KmerAnalysis.DistMemCounter"><code>DistMemCounter</code></a> counter is a multi-process version of <a href="#KmerAnalysis.SerialMemCounter"><code>SerialMemCounter</code></a>.</p><article class="docstring"><header><a class="docstring-binding" id="KmerAnalysis.DistMemCounter" href="#KmerAnalysis.DistMemCounter"><code>KmerAnalysis.DistMemCounter</code></a> — <span class="docstring-category">Type</span></header><section><div><p>The multi-process parallel version of the <a href="#KmerAnalysis.SerialMemCounter"><code>SerialMemCounter</code></a> k-mer counter.</p><p>Like the <a href="#KmerAnalysis.SerialMemCounter"><code>SerialMemCounter</code></a> this counter does all counting and processing in memory, so it is not designed to limit memory use, but if using a cluster of machines the memory used per worker machine would be less. Of course the data is copied back over to the master process and the results combined and so the master node has to have enough RAM available to hold all the result.</p></div></section></article><p>It is used in a very similar fashion to <a href="man/@ref"><code>serial_mem</code></a>, but you need to have multiple julia worker processes available to gain any benefit.</p><pre><code class="language-julia-repl">julia&gt; # Spin up some extra julia worker processes, make sure they are using the
+       # appropriate Project.toml file for your project.
+       using Distributed
+
+julia&gt; addprocs(8, exeflags=&quot;--project=../../../docs/&quot;)
+8-element Array{Int64,1}:
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+
+julia&gt; # Make sure the packages are loaded on all the workers.
+       @everywhere using KmerAnalysis, ReadDatastores, BioSequences
+
+julia&gt; ds = @openreads &quot;ecoli-test-paired.prseq&quot;
+Paired Read Datastore &#39;my-ecoli-test&#39;: 20 reads (10 pairs)
+
+julia&gt; dmc = dist_mem(DNAMer{31}, CANONICAL)
+(::KmerAnalysis.DistMemCounter{Mer{DNAAlphabet{2},31},Canonical}) (generic function with 1 method)
+
+julia&gt; kl = dmc(ds)
+[ Info: Splitting all reads in ecoli-test-paired.prseq, across 8 worker processes and counting kmers
+[ Info: Waiting for workers to finish
+ERROR: TaskFailedException:
+On worker 2:
+MethodError: no method matching serial_mem(::Type{Mer{DNAAlphabet{2},31}}, ::DatastoreBuffer{PairedReads{DNAAlphabet{2}}}, ::Canonical, ::StepRange{UInt64,Int64})
+Closest candidates are:
+  serial_mem(::Type{M}, !Matched::PairedReads{A}, ::CountMode) where {M, A} at /home/runner/.julia/packages/KmerAnalysis/KFM1N/src/counters/serial_mem.jl:59 (method too new to be called from this world context.)
+  serial_mem(::Type{M}, !Matched::C) where {M&lt;:AbstractMer, C&lt;:CountMode} at /home/runner/.julia/packages/KmerAnalysis/KFM1N/src/counters/serial_mem.jl:42 (method too new to be called from this world context.)
+_do_serial_mem at /home/runner/.julia/packages/KmerAnalysis/KFM1N/src/counters/dist_mem.jl:5
+#108 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.3/Distributed/src/process_messages.jl:294
+run_work_thunk at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.3/Distributed/src/process_messages.jl:79
+macro expansion at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.3/Distributed/src/process_messages.jl:294 [inlined]
+#107 at ./task.jl:333
+Stacktrace:
+ [1] #remotecall_fetch#145(::Base.Iterators.Pairs{Union{},Union{},Tuple{},NamedTuple{(),Tuple{}}}, ::typeof(Distributed.remotecall_fetch), ::Function, ::Distributed.Worker, ::Type, ::Vararg{Any,N} where N) at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.3/Distributed/src/remotecall.jl:390
+ [2] remotecall_fetch(::Function, ::Distributed.Worker, ::Type, ::Vararg{Any,N} where N) at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.3/Distributed/src/remotecall.jl:382
+ [3] #remotecall_fetch#148(::Base.Iterators.Pairs{Union{},Union{},Tuple{},NamedTuple{(),Tuple{}}}, ::typeof(Distributed.remotecall_fetch), ::Function, ::Int64, ::Type, ::Vararg{Any,N} where N) at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.3/Distributed/src/remotecall.jl:417
+ [4] remotecall_fetch at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.3/Distributed/src/remotecall.jl:417 [inlined]
+ [5] (::KmerAnalysis.var&quot;#1#2&quot;{PairedReads{DNAAlphabet{2}},Mer{DNAAlphabet{2},31},String,Canonical,Array{Array{MerCount{Mer{DNAAlphabet{2},31}},1},1},Int64,Int64})() at ./task.jl:333
+
+...and 7 more exception(s).</code></pre><p>Naturally, for such a small and simple example as this, using <a href="#KmerAnalysis.DistMemCounter"><code>DistMemCounter</code></a> for such a small dataset is probably just worse than doing it in memory serially, because of the overheads. For real datasets you should see a benefit.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../basic_counting/">« Basic types and counting</a><a class="docs-footer-nextpage" href="../analyses/">Analysing Kmer count data »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 26 June 2020 16:41">Friday 26 June 2020</span>. Using Julia version 1.3.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
