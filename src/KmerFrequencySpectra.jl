@@ -17,16 +17,27 @@ end
 Build a 1 dimensional k-mer frequency spectra, from a vector of kmer counts,
 excluding any k-mer counts that don't meet `min_count`.
 """
-function KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}, min_count::Integer = 0) where {M<:AbstractMer}
+function KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}, min_count::Integer) where {M<:AbstractMer}
     spec = KmerFrequencySpectra{1}(min_count)
     sdat = spec.data
     for x in freqs
         f = freq(x)
-        if f ≥ min
+        if f ≥ min_count
             i = f + one(UInt8)
             old = sdat[i]
             sdat[i] = old + one(UInt8)
         end
+    end
+    return spec
+end
+
+function KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}) where {M<:AbstractMer}
+    spec = KmerFrequencySpectra{1}(0)
+    sdat = spec.data
+    for x in freqs
+        i = freq(x) + one(UInt8)
+        old = sdat[i]
+        sdat[i] = old + one(UInt8)
     end
     return spec
 end
