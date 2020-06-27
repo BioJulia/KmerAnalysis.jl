@@ -130,12 +130,12 @@ end
 end
 
 """
-    spectra(freqs::Vector{MerCount{M}}, min_count::Integer = 0) where {M<:AbstractMer}
+    spectra(freqs::Vector{MerCount{M}}, min_count::Integer) where {M<:AbstractMer}
 
 Build a 1 dimensional kmer frequency spectra, from a vector of kmer counts,
 excluding any kmer counts that don't meet `min_count`.
 """
-function spectra(freqs::Vector{MerCount{M}}, min_count::Integer = 0) where {M<:AbstractMer}
+function spectra(freqs::Vector{MerCount{M}}, min_count::Integer) where {M<:AbstractMer}
     return KmerFrequencySpectra{1}(freqs, min_count)
 end
 spectra(freqs::Vector{MerCount{M}}) where {M<:AbstractMer} = KmerFrequencySpectra{1}(freqs)
