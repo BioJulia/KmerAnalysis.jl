@@ -23,9 +23,9 @@ function KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}, min_count::Integer)
     for x in freqs
         f = freq(x)
         if f ≥ min_count
-            i = f + one(UInt8)
+            i = f + one(UInt16)
             old = sdat[i]
-            sdat[i] = old + one(UInt8)
+            sdat[i] = old + one(old)
         end
     end
     return spec
@@ -35,9 +35,9 @@ function KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}) where {M<:AbstractM
     spec = KmerFrequencySpectra{1}(0)
     sdat = spec.data
     for x in freqs
-        i = freq(x) + one(UInt8)
+        i = freq(x) + one(UInt16)
         old = sdat[i]
-        sdat[i] = old + one(UInt8)
+        sdat[i] = old + one(old)
     end
     return spec
 end
@@ -138,6 +138,7 @@ excluding any kmer counts that don't meet `min_count`.
 function spectra(freqs::Vector{MerCount{M}}, min_count::Integer = 0) where {M<:AbstractMer}
     return KmerFrequencySpectra{1}(freqs, min_count)
 end
+spectra(freqs::Vector{MerCount{M}}) where {M<:AbstractMer} = KmerFrequencySpectra{1}(freqs)
 
 function spectra(c::C, input, min_count::Integer = 0) where {C<:AbstractKmerCounter}
     return spectra(c(input), min_count)
