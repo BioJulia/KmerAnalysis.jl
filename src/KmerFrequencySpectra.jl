@@ -110,7 +110,7 @@ Base.firstindex(x::KmerFrequencySpectra{1}) = 0
 Base.lastindex(x::KmerFrequencySpectra{1}) = 256
 Base.eachindex(x::KmerFrequencySpectra{1}) = firstindex(x):lastindex(x)
 
-@inline function boundscheck(x::KmerFrequencySpectra{1}, i)
+@inline function checkbounds(x::KmerFrequencySpectra{1}, i)
     if i < firstindex(x.data) || i > lastindex(x.data)
         throw(BoundsError(x, i))
     end
