@@ -59,9 +59,9 @@ ERROR: TaskFailedException:
 On worker 2:
 MethodError: no method matching serial_mem(::Type{Mer{DNAAlphabet{2},31}}, ::DatastoreBuffer{PairedReads{DNAAlphabet{2}}}, ::Canonical, ::StepRange{UInt64,Int64})
 Closest candidates are:
-  serial_mem(::Type{M}, !Matched::PairedReads{A}, ::CountMode) where {M, A} at /home/runner/.julia/packages/KmerAnalysis/rTpTq/src/counters/serial_mem.jl:59 (method too new to be called from this world context.)
-  serial_mem(::Type{M}, !Matched::C) where {M&lt;:AbstractMer, C&lt;:CountMode} at /home/runner/.julia/packages/KmerAnalysis/rTpTq/src/counters/serial_mem.jl:42 (method too new to be called from this world context.)
-_do_serial_mem at /home/runner/.julia/packages/KmerAnalysis/rTpTq/src/counters/dist_mem.jl:5
+  serial_mem(::Type{M}, !Matched::PairedReads{A}, ::CountMode) where {M, A} at /home/runner/.julia/packages/KmerAnalysis/bgVzy/src/counters/serial_mem.jl:59 (method too new to be called from this world context.)
+  serial_mem(::Type{M}, !Matched::C) where {M&lt;:AbstractMer, C&lt;:CountMode} at /home/runner/.julia/packages/KmerAnalysis/bgVzy/src/counters/serial_mem.jl:42 (method too new to be called from this world context.)
+_do_serial_mem at /home/runner/.julia/packages/KmerAnalysis/bgVzy/src/counters/dist_mem.jl:5
 #108 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.3/Distributed/src/process_messages.jl:294
 run_work_thunk at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.3/Distributed/src/process_messages.jl:79
 macro expansion at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.3/Distributed/src/process_messages.jl:294 [inlined]
