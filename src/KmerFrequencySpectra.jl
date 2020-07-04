@@ -73,27 +73,27 @@ function KmerFrequencySpectra{2}(xfreqs::Vector{MerCount{M}}, yfreqs::Vector{Mer
         fi = xfreqs[i]
         fj = yfreqs[j]
         if mer(fi) === mer(fj)
-            sdat[freq(fi) + one(UInt8), freq(fj) + one(UInt8)] += 1
+            sdat[freq(fi) + one(UInt16), freq(fj) + one(UInt16)] += 1
             i += 1
             j += 1
         elseif mer(fi) < mer(fj)
-            sdat[freq(fi) + one(UInt8), one(UInt8)] += 1
+            sdat[freq(fi) + one(UInt16), one(UInt16)] += 1
             i += 1
         elseif mer(fj) < mer(fi)
-            sdat[one(UInt8), freq(fj) + one(UInt8)] += 1
+            sdat[one(UInt16), freq(fj) + one(UInt16)] += 1
             j += 1
         end
     end
     
     while i < i_end
         fi = xfreqs[i]
-        sdat[freq(fi) + one(UInt8), one(UInt8)] += 1
+        sdat[freq(fi) + one(UInt16), one(UInt16)] += 1
         i += 1
     end
     
     while j < j_end
         fj = yfreqs[j]
-        sdat[one(UInt8), freq(fj) + one(UInt8)] += 1
+        sdat[one(UInt16), freq(fj) + one(UInt16)] += 1
         j += 1
     end
     
