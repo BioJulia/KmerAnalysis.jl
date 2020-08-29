@@ -53,7 +53,8 @@ abstract type AbstractKmerCounter{M<:AbstractMer} <: Function end
 include("MerCount.jl")
 include("counters/serial_mem.jl")
 include("counters/dist_mem.jl")
-include("KmerFrequencySpectra.jl")
 include("IndexedCounts.jl")
+include("KmerFrequencySpectra.jl")
+include("kci.jl")
 
 end # module
