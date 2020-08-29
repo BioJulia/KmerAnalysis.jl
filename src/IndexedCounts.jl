@@ -39,7 +39,8 @@ function _count_and_collapse!(mers::Vector{M}, counts::Vector{UInt16}) where {M<
     return nothing
 end
 
-function index!(mc::IndexedCounts{M,C}, ref_sequences::Vector{<:LongSequence}) where {M<:AbstractMer,C<:CountMode}
+function index!(mc::IndexedCounts{M,C}, ref_sequences) where {M<:AbstractMer,C<:CountMode}
+    @assert eltype(ref_sequences) <: LongSequence
     @info "Indexing kmer counts of reference sequences"
     @info "Populating index with reference sequence mers"
     # Add all Kmers from reference sequences.
