@@ -11,17 +11,11 @@ function KmerFrequencySpectra{1}(min::Integer = 0)
     return KmerFrequencySpectra{1}(zeros(UInt64, 257), convert(UInt8, min))
 end
 
-"""
-    KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}, min_count::Integer = 0) where {M<:AbstractMer}
-
-Build a 1 dimensional k-mer frequency spectra, from a vector of kmer counts,
-excluding any k-mer counts that don't meet `min_count`.
-"""
-function KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}, min_count::Integer) where {M<:AbstractMer}
+function KmerFrequencySpectra{1}(freqs, min_count::Integer)
+    @assert eltype(freqs) isa Unsigned
     spec = KmerFrequencySpectra{1}(min_count)
     sdat = spec.data
-    for x in freqs
-        f = freq(x)
+    for f in freqs
         if f ≥ min_count
             i = f + one(UInt16)
             old = sdat[i]
@@ -31,15 +25,26 @@ function KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}, min_count::Integer)
     return spec
 end
 
+"""
+    KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}, min_count::Integer = 0) where {M<:AbstractMer}
+
+Build a 1 dimensional k-mer frequency spectra, from a vector of kmer counts,
+excluding any k-mer counts that don't meet `min_count`.
+"""
+function KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}, min_count::Integer) where {M<:AbstractMer}
+    return KmerFrequencySpectra{1}(freq(x) for x in freqs, min_count)
+end
+
 function KmerFrequencySpectra{1}(freqs::Vector{MerCount{M}}) where {M<:AbstractMer}
-    spec = KmerFrequencySpectra{1}(0)
-    sdat = spec.data
-    for x in freqs
-        i = freq(x) + one(UInt16)
-        old = sdat[i]
-        sdat[i] = old + one(old)
-    end
-    return spec
+    return KmerFrequencySpectra{1}(freqs, 0)
+    #spec = KmerFrequencySpectra{1}(0)
+    #sdat = spec.data
+    #for x in freqs
+    #    i = freq(x) + one(UInt16)
+    #    old = sdat[i]
+    #    sdat[i] = old + one(old)
+    #end
+    #return spec
 end
 
 function KmerFrequencySpectra{2}(min::Integer = 0)
