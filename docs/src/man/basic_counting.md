@@ -103,7 +103,7 @@ biological sequences in julia.
 
 Furthur on in this manual we will cover some dedicated kmer counting algorithms
 MerCounting provides for larger datasets like those contained in reads
-(using [ReadDatastores.jl](https://biojulia.net/ReadDatastores.jl/stable)).
+(using [ReadDatastores.jl](https://biojulia.dev/ReadDatastores.jl/stable)).
 We will also cover dedicated types such as kmer frequency spectra, and types
 useful for projecting kmer coverage and other kmer related metrics over a genome
 sequence.

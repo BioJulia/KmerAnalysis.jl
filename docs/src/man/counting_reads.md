@@ -34,7 +34,7 @@ SerialMemCounter
 
 It is fairly simple to use. First you need a ReadDatastore, if you need to
 recall how to create one then head over
-to [here](https://biojulia.net/ReadDatastores.jl/stable/build-datastores/) in
+to [here](https://biojulia.dev/ReadDatastores.jl/stable/build-datastores/) in
 ReadDatastores.jl's documentation.
 
 The example below opens a datastore before creating a [`SerialMemCounter`](@ref)
