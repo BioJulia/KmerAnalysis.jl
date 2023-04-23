@@ -25,7 +25,7 @@ pkg> add KmerAnalysis
 To add it to your environment.
 
 You may also want the add-on package
-[KmerAnalysisMakie.jl](https://biojulia.net/KmerAnalysis.jl/stable), which
+[KmerAnalysisMakie.jl](https://biojulia.dev/KmerAnalysis.jl/stable), which
 provides AbstractPlotting recipes for the types in this package.
 
 ## Testing
